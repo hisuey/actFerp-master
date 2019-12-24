@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.rbac.dao.SmUserMapperExpand">
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(userid)
+        FROM
+        sm_user
+        WHERE
+        dr = 0
+        <if test="smUserPo != null and smUserPo.userName != null and smUserPo.userName != ''">
+            and user_name = #{smUserPo.userName}
+        </if>
+    </select>
+
+    <!--分页查询所有用户信息-->
+    <select id="selectAllSmuserAsPage" resultType="cn.hups.rbac.po.SmUserPo">
+        SELECT
+        su.userid,
+        su.user_name as userName,
+        su.user_code as userCode,
+        'donotshow' as userPassword,
+        su.memo,
+        su.email,
+        su.phone,
+        su.islocked,
+        su.enablestate,
+        su.pk_psndoc as pkPsndoc,
+        su.lock_num as lockNum,
+        su.random_num as randomNum,
+        su.creator,
+        suc.user_name as creatorShow,
+        su.creationtime,
+        su.modifier,
+        smo.user_name as modifierShow,
+        su.modifiedtime,
+        su.dr,
+        su.ts
+        FROM
+        sm_user su
+        LEFT JOIN sm_user suc on su.creator = suc.userid and suc.dr = 0
+        LEFT JOIN sm_user smo on su.modifier = smo.userid and smo.dr = 0
+        WHERE
+        su.dr = 0
+        <if test="smUserPo != null and smUserPo.userName != null and smUserPo.userName != ''">
+            and su.user_name = #{smUserPo.userName}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteSmuserByPks" parameterType="java.util.List">
+        UPDATE sm_user SET dr = 1
+        WHERE userid in
+        <foreach collection="pkArr" item="userid" open="(" close=")" separator=",">
+            #{userid}
+        </foreach>
+    </update>
+
+    <!--根据用户名称查询用户信息-->
+    <select id="selectSmUserByUserName" resultType="cn.hups.rbac.po.SmUserPo">
+        SELECT
+        su.userid,
+        su.user_name as userName,
+        su.user_code as userCode,
+        su.user_password as userPassword,
+        su.memo,
+        su.email,
+        su.phone,
+        su.islocked,
+        su.enablestate,
+        su.pk_psndoc as pkPsndoc,
+        su.lock_num as lockNum,
+        su.random_num as randomNum,
+        su.creator,
+        su.creationtime,
+        su.modifier,
+        su.modifiedtime,
+        su.dr,
+        su.ts,
+        bpsn.pk_corp as pkCorp,
+        corp.unitname,
+        bpsn.pk_deptdoc as pkDeptdoc
+        FROM
+        sm_user su
+        LEFT JOIN bd_psndoc bpsn on su.pk_psndoc = bpsn.pk_psndoc and bpsn.dr = 0
+        LEFT JOIN bd_corp corp on bpsn.pk_corp = corp.pk_corp and corp.dr = 0
+        WHERE
+        su.dr = 0
+        <if test="smUserPo != null and smUserPo.userName != null and smUserPo.userName != ''">
+            and su.user_name = #{smUserPo.userName}
+        </if>
+    </select>
+
+    <!--根据用户主键查询该用户人员类别-->
+    <select id="selectPsnTypeByUserId" resultType="java.lang.String">
+      SELECT
+      pty.psntypename
+      FROM sm_user su
+      LEFT JOIN bd_psndoc psn on su.pk_psndoc = psn.pk_psndoc and psn.dr = 0
+      LEFT JOIN bd_psntype pty on psn.pk_psntype = pty.pk_psntype and pty.dr = 0
+      WHERE
+      su.userid = #{userid} and su.dr = 0
+    </select>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.refdoc.dao.BdTradeMapperExpand">
+
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(pk_trade)
+        FROM
+        bd_trade
+        WHERE
+        dr = 0
+        <if test="bdTradePo != null and bdTradePo.tradename != null and bdTradePo.tradename != ''">
+            and tradename = #{bdTradePo.tradename}
+        </if>
+    </select>
+
+    <!--分页查询数据-->
+    <select id="selectAllTradeAsPage" resultType="cn.hups.refdoc.po.BdTradePo">
+        SELECT
+        bt.pk_trade as pkTrade,
+        bt.tradecode,
+        bt.tradename,
+        bt.creator,
+        su.user_name as creatorShow,
+        bt.creationtime,
+        bt.dr,
+        bt.ts
+        FROM
+        bd_trade bt
+        LEFT JOIN sm_user su on bt.creator = su.userid and su.dr = 0
+        WHERE
+        bt.dr = 0
+        <if test="bdTradePo != null and bdTradePo.tradename != null and bdTradePo.tradename != ''">
+            and bt.tradename = #{bdTradePo.tradename}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteTradeByPks" parameterType="java.util.List">
+        UPDATE bd_trade SET dr = 1
+        WHERE pk_trade in
+        <foreach collection="pkArr" item="pk_trade" open="(" close=")" separator=",">
+            #{pk_trade}
+        </foreach>
+    </update>
+
+    <!--插损所有所属行业作为参照-->
+    <select id="selectAllTradeAsRef" resultType="cn.hups.common.po.ClientRefPo">
+        SELECT
+        bt.pk_trade as value,
+        bt.tradename as label
+        FROM
+        bd_trade bt
+        WHERE
+        bt.dr = 0
+    </select>
+</mapper>

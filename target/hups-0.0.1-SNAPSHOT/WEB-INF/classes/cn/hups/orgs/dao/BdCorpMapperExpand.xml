@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.orgs.dao.BdCorpMapperExpand">
+
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(pk_corp)
+        FROM
+        bd_corp
+        WHERE
+        dr = 0
+        <if test="bdCorp != null and bdCorp.unitname != null and bdCorp.unitname != ''">
+            and unitname = #{bdCorp.unitname}
+        </if>
+    </select>
+
+    <!--分页查询数据-->
+    <select id="selectAllBdCorpAsPage" resultType="cn.hups.orgs.po.BdCorpPo">
+        SELECT
+        bc.pk_corp as pkCorp,
+        bc.unitname,
+        bc.unitshortname,
+        bc.unitcode,
+        bc.phone1,
+        bc.phone2,
+        bc.phone3,
+        bc.industry,
+        bc.isseal,
+        bc.sealeddate,
+        bc.url,
+        bc.memo,
+        bc.def1,
+        bc.def2,
+        bc.def3,
+        bc.def4,
+        bc.def5,
+        bc.creator,
+        su.user_name as creatorShow,
+        bc.creationtime,
+        bc.dr,
+        bc.ts
+        FROM
+        bd_corp bc
+        LEFT JOIN sm_user su on bc.creator = su.userid and su.dr = 0
+        WHERE
+        bc.dr = 0
+        <if test="bdCorp != null and bdCorp.unitname != null and bdCorp.unitname != ''">
+            and bc.unitname LIKE #{bdCorp.unitname}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteBdCorpAsPks" parameterType="java.util.List">
+        UPDATE bd_corp SET dr = 1
+        WHERE pk_corp in
+        <foreach collection="pkArr" item="pk_corp" open="(" close=")" separator=",">
+            #{pk_corp}
+        </foreach>
+    </update>
+
+    <!--查询所有公司作为参照-->
+    <select id="selectAllBdCorpAsRef" resultType="cn.hups.common.po.ClientRefPo">
+        SELECT
+        pk_corp as value,
+        unitname as label
+        FROM
+        bd_corp
+        WHERE dr = 0
+    </select>
+
+</mapper>

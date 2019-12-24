@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.hups.rbac.dao.SmUserMapper" >
+  <resultMap id="BaseResultMap" type="cn.hups.rbac.entity.SmUser" >
+    <constructor >
+      <idArg column="userid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="memo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="islocked" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="enablestate" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pk_psndoc" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="lock_num" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="random_num" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="creator" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creationtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="modifier" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="modifiedtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="dr" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ts" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    userid, user_name, user_code, user_password, memo, email, phone, islocked, enablestate, 
+    pk_psndoc, lock_num, random_num, creator, creationtime, modifier, modifiedtime, dr, 
+    ts
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.hups.rbac.entity.SmUserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sm_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sm_user
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sm_user
+    where userid = #{userid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.hups.rbac.entity.SmUserExample" >
+    delete from sm_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.hups.rbac.entity.SmUser" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userid">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sm_user (userid, user_name, user_code, 
+      user_password, memo, email, 
+      phone, islocked, enablestate, 
+      pk_psndoc, lock_num, random_num, 
+      creator, creationtime, modifier, 
+      modifiedtime, dr, ts)
+    values (#{userid,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, 
+      #{userPassword,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{islocked,jdbcType=INTEGER}, #{enablestate,jdbcType=INTEGER}, 
+      #{pkPsndoc,jdbcType=INTEGER}, #{lockNum,jdbcType=VARCHAR}, #{randomNum,jdbcType=CHAR}, 
+      #{creator,jdbcType=INTEGER}, #{creationtime,jdbcType=CHAR}, #{modifier,jdbcType=INTEGER}, 
+      #{modifiedtime,jdbcType=CHAR}, #{dr,jdbcType=INTEGER}, #{ts,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hups.rbac.entity.SmUser" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userid">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sm_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userCode != null" >
+        user_code,
+      </if>
+      <if test="userPassword != null" >
+        user_password,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="islocked != null" >
+        islocked,
+      </if>
+      <if test="enablestate != null" >
+        enablestate,
+      </if>
+      <if test="pkPsndoc != null" >
+        pk_psndoc,
+      </if>
+      <if test="lockNum != null" >
+        lock_num,
+      </if>
+      <if test="randomNum != null" >
+        random_num,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creationtime != null" >
+        creationtime,
+      </if>
+      <if test="modifier != null" >
+        modifier,
+      </if>
+      <if test="modifiedtime != null" >
+        modifiedtime,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null" >
+        #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="islocked != null" >
+        #{islocked,jdbcType=INTEGER},
+      </if>
+      <if test="enablestate != null" >
+        #{enablestate,jdbcType=INTEGER},
+      </if>
+      <if test="pkPsndoc != null" >
+        #{pkPsndoc,jdbcType=INTEGER},
+      </if>
+      <if test="lockNum != null" >
+        #{lockNum,jdbcType=VARCHAR},
+      </if>
+      <if test="randomNum != null" >
+        #{randomNum,jdbcType=CHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=INTEGER},
+      </if>
+      <if test="modifiedtime != null" >
+        #{modifiedtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.hups.rbac.entity.SmUserExample" resultType="java.lang.Integer" >
+    select count(*) from sm_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sm_user
+    <set >
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userCode != null" >
+        user_code = #{record.userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPassword != null" >
+        user_password = #{record.userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.islocked != null" >
+        islocked = #{record.islocked,jdbcType=INTEGER},
+      </if>
+      <if test="record.enablestate != null" >
+        enablestate = #{record.enablestate,jdbcType=INTEGER},
+      </if>
+      <if test="record.pkPsndoc != null" >
+        pk_psndoc = #{record.pkPsndoc,jdbcType=INTEGER},
+      </if>
+      <if test="record.lockNum != null" >
+        lock_num = #{record.lockNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.randomNum != null" >
+        random_num = #{record.randomNum,jdbcType=CHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationtime != null" >
+        creationtime = #{record.creationtime,jdbcType=CHAR},
+      </if>
+      <if test="record.modifier != null" >
+        modifier = #{record.modifier,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifiedtime != null" >
+        modifiedtime = #{record.modifiedtime,jdbcType=CHAR},
+      </if>
+      <if test="record.dr != null" >
+        dr = #{record.dr,jdbcType=INTEGER},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sm_user
+    set userid = #{record.userid,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      user_code = #{record.userCode,jdbcType=VARCHAR},
+      user_password = #{record.userPassword,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      islocked = #{record.islocked,jdbcType=INTEGER},
+      enablestate = #{record.enablestate,jdbcType=INTEGER},
+      pk_psndoc = #{record.pkPsndoc,jdbcType=INTEGER},
+      lock_num = #{record.lockNum,jdbcType=VARCHAR},
+      random_num = #{record.randomNum,jdbcType=CHAR},
+      creator = #{record.creator,jdbcType=INTEGER},
+      creationtime = #{record.creationtime,jdbcType=CHAR},
+      modifier = #{record.modifier,jdbcType=INTEGER},
+      modifiedtime = #{record.modifiedtime,jdbcType=CHAR},
+      dr = #{record.dr,jdbcType=INTEGER},
+      ts = #{record.ts,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hups.rbac.entity.SmUser" >
+    update sm_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null" >
+        user_code = #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="islocked != null" >
+        islocked = #{islocked,jdbcType=INTEGER},
+      </if>
+      <if test="enablestate != null" >
+        enablestate = #{enablestate,jdbcType=INTEGER},
+      </if>
+      <if test="pkPsndoc != null" >
+        pk_psndoc = #{pkPsndoc,jdbcType=INTEGER},
+      </if>
+      <if test="lockNum != null" >
+        lock_num = #{lockNum,jdbcType=VARCHAR},
+      </if>
+      <if test="randomNum != null" >
+        random_num = #{randomNum,jdbcType=CHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        creationtime = #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="modifier != null" >
+        modifier = #{modifier,jdbcType=INTEGER},
+      </if>
+      <if test="modifiedtime != null" >
+        modifiedtime = #{modifiedtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=CHAR},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hups.rbac.entity.SmUser" >
+    update sm_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_code = #{userCode,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      islocked = #{islocked,jdbcType=INTEGER},
+      enablestate = #{enablestate,jdbcType=INTEGER},
+      pk_psndoc = #{pkPsndoc,jdbcType=INTEGER},
+      lock_num = #{lockNum,jdbcType=VARCHAR},
+      random_num = #{randomNum,jdbcType=CHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      creationtime = #{creationtime,jdbcType=CHAR},
+      modifier = #{modifier,jdbcType=INTEGER},
+      modifiedtime = #{modifiedtime,jdbcType=CHAR},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=CHAR}
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

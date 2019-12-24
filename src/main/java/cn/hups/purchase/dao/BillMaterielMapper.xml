@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.hups.purchase.dao.BillMaterielMapper" >
+  <resultMap id="BaseResultMap" type="cn.hups.purchase.entity.BillMateriel" >
+    <constructor >
+      <idArg column="pk_materiel" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pk_product" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pk_purchase_quote" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="row_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="item_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="model" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="material_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="material_fullname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="potting" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="norms" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="place_number" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="welding_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="memo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="brand" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="useg_unit" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="usage_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="usage_total" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="batching_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="picking_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="backing_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="preview_url" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="purchase_unit_price" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="purchase_total_price" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="sale_unit_price" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="sale_total_price" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="creator" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creationtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="dr" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ts" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pk_materiel, pk_product, pk_purchase_quote, row_num, item_type, model, material_name, 
+    material_fullname, potting, norms, place_number, welding_number, memo, brand, useg_unit, 
+    usage_num, usage_total, batching_number, picking_number, backing_number, preview_url, 
+    purchase_unit_price, purchase_total_price, sale_unit_price, sale_total_price, creator, 
+    creationtime, dr, ts
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.hups.purchase.entity.BillMaterielExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bill_materiel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bill_materiel
+    where pk_materiel = #{pkMateriel,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bill_materiel
+    where pk_materiel = #{pkMateriel,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.hups.purchase.entity.BillMaterielExample" >
+    delete from bill_materiel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.hups.purchase.entity.BillMateriel" >
+    insert into bill_materiel (pk_materiel, pk_product, pk_purchase_quote, 
+      row_num, item_type, model, 
+      material_name, material_fullname, potting, 
+      norms, place_number, welding_number, 
+      memo, brand, useg_unit, 
+      usage_num, usage_total, batching_number, 
+      picking_number, backing_number, preview_url, 
+      purchase_unit_price, purchase_total_price, sale_unit_price, 
+      sale_total_price, creator, creationtime, 
+      dr, ts)
+    values (#{pkMateriel,jdbcType=INTEGER}, #{pkProduct,jdbcType=INTEGER}, #{pkPurchaseQuote,jdbcType=INTEGER}, 
+      #{rowNum,jdbcType=INTEGER}, #{itemType,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{materialName,jdbcType=VARCHAR}, #{materialFullname,jdbcType=VARCHAR}, #{potting,jdbcType=VARCHAR}, 
+      #{norms,jdbcType=VARCHAR}, #{placeNumber,jdbcType=VARCHAR}, #{weldingNumber,jdbcType=INTEGER}, 
+      #{memo,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, #{usegUnit,jdbcType=VARCHAR}, 
+      #{usageNum,jdbcType=INTEGER}, #{usageTotal,jdbcType=INTEGER}, #{batchingNumber,jdbcType=INTEGER}, 
+      #{pickingNumber,jdbcType=INTEGER}, #{backingNumber,jdbcType=INTEGER}, #{previewUrl,jdbcType=VARCHAR}, 
+      #{purchaseUnitPrice,jdbcType=DOUBLE}, #{purchaseTotalPrice,jdbcType=DOUBLE}, #{saleUnitPrice,jdbcType=DOUBLE}, 
+      #{saleTotalPrice,jdbcType=DOUBLE}, #{creator,jdbcType=INTEGER}, #{creationtime,jdbcType=CHAR}, 
+      #{dr,jdbcType=INTEGER}, #{ts,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hups.purchase.entity.BillMateriel" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkMateriel">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bill_materiel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pkMateriel != null" >
+        pk_materiel,
+      </if>
+      <if test="pkProduct != null" >
+        pk_product,
+      </if>
+      <if test="pkPurchaseQuote != null" >
+        pk_purchase_quote,
+      </if>
+      <if test="rowNum != null" >
+        row_num,
+      </if>
+      <if test="itemType != null" >
+        item_type,
+      </if>
+      <if test="model != null" >
+        model,
+      </if>
+      <if test="materialName != null" >
+        material_name,
+      </if>
+      <if test="materialFullname != null" >
+        material_fullname,
+      </if>
+      <if test="potting != null" >
+        potting,
+      </if>
+      <if test="norms != null" >
+        norms,
+      </if>
+      <if test="placeNumber != null" >
+        place_number,
+      </if>
+      <if test="weldingNumber != null" >
+        welding_number,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="brand != null" >
+        brand,
+      </if>
+      <if test="usegUnit != null" >
+        useg_unit,
+      </if>
+      <if test="usageNum != null" >
+        usage_num,
+      </if>
+      <if test="usageTotal != null" >
+        usage_total,
+      </if>
+      <if test="batchingNumber != null" >
+        batching_number,
+      </if>
+      <if test="pickingNumber != null" >
+        picking_number,
+      </if>
+      <if test="backingNumber != null" >
+        backing_number,
+      </if>
+      <if test="previewUrl != null" >
+        preview_url,
+      </if>
+      <if test="purchaseUnitPrice != null" >
+        purchase_unit_price,
+      </if>
+      <if test="purchaseTotalPrice != null" >
+        purchase_total_price,
+      </if>
+      <if test="saleUnitPrice != null" >
+        sale_unit_price,
+      </if>
+      <if test="saleTotalPrice != null" >
+        sale_total_price,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creationtime != null" >
+        creationtime,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pkMateriel != null" >
+        #{pkMateriel,jdbcType=INTEGER},
+      </if>
+      <if test="pkProduct != null" >
+        #{pkProduct,jdbcType=INTEGER},
+      </if>
+      <if test="pkPurchaseQuote != null" >
+        #{pkPurchaseQuote,jdbcType=INTEGER},
+      </if>
+      <if test="rowNum != null" >
+        #{rowNum,jdbcType=INTEGER},
+      </if>
+      <if test="itemType != null" >
+        #{itemType,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="materialName != null" >
+        #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="materialFullname != null" >
+        #{materialFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="potting != null" >
+        #{potting,jdbcType=VARCHAR},
+      </if>
+      <if test="norms != null" >
+        #{norms,jdbcType=VARCHAR},
+      </if>
+      <if test="placeNumber != null" >
+        #{placeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="weldingNumber != null" >
+        #{weldingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="usegUnit != null" >
+        #{usegUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="usageNum != null" >
+        #{usageNum,jdbcType=INTEGER},
+      </if>
+      <if test="usageTotal != null" >
+        #{usageTotal,jdbcType=INTEGER},
+      </if>
+      <if test="batchingNumber != null" >
+        #{batchingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="pickingNumber != null" >
+        #{pickingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="backingNumber != null" >
+        #{backingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="previewUrl != null" >
+        #{previewUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseUnitPrice != null" >
+        #{purchaseUnitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="purchaseTotalPrice != null" >
+        #{purchaseTotalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="saleUnitPrice != null" >
+        #{saleUnitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="saleTotalPrice != null" >
+        #{saleTotalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.hups.purchase.entity.BillMaterielExample" resultType="java.lang.Integer" >
+    select count(*) from bill_materiel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bill_materiel
+    <set >
+      <if test="record.pkMateriel != null" >
+        pk_materiel = #{record.pkMateriel,jdbcType=INTEGER},
+      </if>
+      <if test="record.pkProduct != null" >
+        pk_product = #{record.pkProduct,jdbcType=INTEGER},
+      </if>
+      <if test="record.pkPurchaseQuote != null" >
+        pk_purchase_quote = #{record.pkPurchaseQuote,jdbcType=INTEGER},
+      </if>
+      <if test="record.rowNum != null" >
+        row_num = #{record.rowNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemType != null" >
+        item_type = #{record.itemType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.model != null" >
+        model = #{record.model,jdbcType=VARCHAR},
+      </if>
+      <if test="record.materialName != null" >
+        material_name = #{record.materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.materialFullname != null" >
+        material_fullname = #{record.materialFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.potting != null" >
+        potting = #{record.potting,jdbcType=VARCHAR},
+      </if>
+      <if test="record.norms != null" >
+        norms = #{record.norms,jdbcType=VARCHAR},
+      </if>
+      <if test="record.placeNumber != null" >
+        place_number = #{record.placeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weldingNumber != null" >
+        welding_number = #{record.weldingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brand != null" >
+        brand = #{record.brand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usegUnit != null" >
+        useg_unit = #{record.usegUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usageNum != null" >
+        usage_num = #{record.usageNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.usageTotal != null" >
+        usage_total = #{record.usageTotal,jdbcType=INTEGER},
+      </if>
+      <if test="record.batchingNumber != null" >
+        batching_number = #{record.batchingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.pickingNumber != null" >
+        picking_number = #{record.pickingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.backingNumber != null" >
+        backing_number = #{record.backingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.previewUrl != null" >
+        preview_url = #{record.previewUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.purchaseUnitPrice != null" >
+        purchase_unit_price = #{record.purchaseUnitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.purchaseTotalPrice != null" >
+        purchase_total_price = #{record.purchaseTotalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.saleUnitPrice != null" >
+        sale_unit_price = #{record.saleUnitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.saleTotalPrice != null" >
+        sale_total_price = #{record.saleTotalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationtime != null" >
+        creationtime = #{record.creationtime,jdbcType=CHAR},
+      </if>
+      <if test="record.dr != null" >
+        dr = #{record.dr,jdbcType=INTEGER},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bill_materiel
+    set pk_materiel = #{record.pkMateriel,jdbcType=INTEGER},
+      pk_product = #{record.pkProduct,jdbcType=INTEGER},
+      pk_purchase_quote = #{record.pkPurchaseQuote,jdbcType=INTEGER},
+      row_num = #{record.rowNum,jdbcType=INTEGER},
+      item_type = #{record.itemType,jdbcType=VARCHAR},
+      model = #{record.model,jdbcType=VARCHAR},
+      material_name = #{record.materialName,jdbcType=VARCHAR},
+      material_fullname = #{record.materialFullname,jdbcType=VARCHAR},
+      potting = #{record.potting,jdbcType=VARCHAR},
+      norms = #{record.norms,jdbcType=VARCHAR},
+      place_number = #{record.placeNumber,jdbcType=VARCHAR},
+      welding_number = #{record.weldingNumber,jdbcType=INTEGER},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      brand = #{record.brand,jdbcType=VARCHAR},
+      useg_unit = #{record.usegUnit,jdbcType=VARCHAR},
+      usage_num = #{record.usageNum,jdbcType=INTEGER},
+      usage_total = #{record.usageTotal,jdbcType=INTEGER},
+      batching_number = #{record.batchingNumber,jdbcType=INTEGER},
+      picking_number = #{record.pickingNumber,jdbcType=INTEGER},
+      backing_number = #{record.backingNumber,jdbcType=INTEGER},
+      preview_url = #{record.previewUrl,jdbcType=VARCHAR},
+      purchase_unit_price = #{record.purchaseUnitPrice,jdbcType=DOUBLE},
+      purchase_total_price = #{record.purchaseTotalPrice,jdbcType=DOUBLE},
+      sale_unit_price = #{record.saleUnitPrice,jdbcType=DOUBLE},
+      sale_total_price = #{record.saleTotalPrice,jdbcType=DOUBLE},
+      creator = #{record.creator,jdbcType=INTEGER},
+      creationtime = #{record.creationtime,jdbcType=CHAR},
+      dr = #{record.dr,jdbcType=INTEGER},
+      ts = #{record.ts,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hups.purchase.entity.BillMateriel" >
+    update bill_materiel
+    <set >
+      <if test="pkProduct != null" >
+        pk_product = #{pkProduct,jdbcType=INTEGER},
+      </if>
+      <if test="pkPurchaseQuote != null" >
+        pk_purchase_quote = #{pkPurchaseQuote,jdbcType=INTEGER},
+      </if>
+      <if test="rowNum != null" >
+        row_num = #{rowNum,jdbcType=INTEGER},
+      </if>
+      <if test="itemType != null" >
+        item_type = #{itemType,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="materialName != null" >
+        material_name = #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="materialFullname != null" >
+        material_fullname = #{materialFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="potting != null" >
+        potting = #{potting,jdbcType=VARCHAR},
+      </if>
+      <if test="norms != null" >
+        norms = #{norms,jdbcType=VARCHAR},
+      </if>
+      <if test="placeNumber != null" >
+        place_number = #{placeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="weldingNumber != null" >
+        welding_number = #{weldingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="usegUnit != null" >
+        useg_unit = #{usegUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="usageNum != null" >
+        usage_num = #{usageNum,jdbcType=INTEGER},
+      </if>
+      <if test="usageTotal != null" >
+        usage_total = #{usageTotal,jdbcType=INTEGER},
+      </if>
+      <if test="batchingNumber != null" >
+        batching_number = #{batchingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="pickingNumber != null" >
+        picking_number = #{pickingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="backingNumber != null" >
+        backing_number = #{backingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="previewUrl != null" >
+        preview_url = #{previewUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseUnitPrice != null" >
+        purchase_unit_price = #{purchaseUnitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="purchaseTotalPrice != null" >
+        purchase_total_price = #{purchaseTotalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="saleUnitPrice != null" >
+        sale_unit_price = #{saleUnitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="saleTotalPrice != null" >
+        sale_total_price = #{saleTotalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        creationtime = #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=CHAR},
+      </if>
+    </set>
+    where pk_materiel = #{pkMateriel,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hups.purchase.entity.BillMateriel" >
+    update bill_materiel
+    set pk_product = #{pkProduct,jdbcType=INTEGER},
+      pk_purchase_quote = #{pkPurchaseQuote,jdbcType=INTEGER},
+      row_num = #{rowNum,jdbcType=INTEGER},
+      item_type = #{itemType,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      material_name = #{materialName,jdbcType=VARCHAR},
+      material_fullname = #{materialFullname,jdbcType=VARCHAR},
+      potting = #{potting,jdbcType=VARCHAR},
+      norms = #{norms,jdbcType=VARCHAR},
+      place_number = #{placeNumber,jdbcType=VARCHAR},
+      welding_number = #{weldingNumber,jdbcType=INTEGER},
+      memo = #{memo,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      useg_unit = #{usegUnit,jdbcType=VARCHAR},
+      usage_num = #{usageNum,jdbcType=INTEGER},
+      usage_total = #{usageTotal,jdbcType=INTEGER},
+      batching_number = #{batchingNumber,jdbcType=INTEGER},
+      picking_number = #{pickingNumber,jdbcType=INTEGER},
+      backing_number = #{backingNumber,jdbcType=INTEGER},
+      preview_url = #{previewUrl,jdbcType=VARCHAR},
+      purchase_unit_price = #{purchaseUnitPrice,jdbcType=DOUBLE},
+      purchase_total_price = #{purchaseTotalPrice,jdbcType=DOUBLE},
+      sale_unit_price = #{saleUnitPrice,jdbcType=DOUBLE},
+      sale_total_price = #{saleTotalPrice,jdbcType=DOUBLE},
+      creator = #{creator,jdbcType=INTEGER},
+      creationtime = #{creationtime,jdbcType=CHAR},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=CHAR}
+    where pk_materiel = #{pkMateriel,jdbcType=INTEGER}
+  </update>
+</mapper>

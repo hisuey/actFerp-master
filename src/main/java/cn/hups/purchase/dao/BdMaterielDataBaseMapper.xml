@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.hups.purchase.dao.BdMaterielDataBaseMapper" >
+  <resultMap id="BaseResultMap" type="cn.hups.purchase.entity.BdMaterielDataBase" >
+    <constructor >
+      <idArg column="pk_db_materiel" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="materiel_date" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="materiel_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="material_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="material_fullname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="potting" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="norms" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="memo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="brand" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pk_supplier" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pk_agent" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="traffic_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="purchase_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="inclutax" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="usage_unit" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="count_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="unit_price" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="amount_money" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="income_tax" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="tax_unit_price" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="price_tax_total" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="batch_num" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="expire_date" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="tax_rate" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="creator" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creationtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="ts" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="dr" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pk_db_materiel, materiel_date, materiel_code, material_name, material_fullname, potting, 
+    norms, memo, brand, pk_supplier, pk_agent, traffic_type, purchase_type, inclutax, 
+    usage_unit, count_num, unit_price, amount_money, income_tax, tax_unit_price, price_tax_total, 
+    batch_num, expire_date, tax_rate, creator, creationtime, ts, dr
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.hups.purchase.entity.BdMaterielDataBaseExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bd_materiel_data_base
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bd_materiel_data_base
+    where pk_db_materiel = #{pkDbMateriel,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bd_materiel_data_base
+    where pk_db_materiel = #{pkDbMateriel,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.hups.purchase.entity.BdMaterielDataBaseExample" >
+    delete from bd_materiel_data_base
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.hups.purchase.entity.BdMaterielDataBase" >
+    insert into bd_materiel_data_base (pk_db_materiel, materiel_date, materiel_code, 
+      material_name, material_fullname, potting, 
+      norms, memo, brand, 
+      pk_supplier, pk_agent, traffic_type, 
+      purchase_type, inclutax, usage_unit, 
+      count_num, unit_price, amount_money, 
+      income_tax, tax_unit_price, price_tax_total, 
+      batch_num, expire_date, tax_rate, 
+      creator, creationtime, ts, 
+      dr)
+    values (#{pkDbMateriel,jdbcType=INTEGER}, #{materielDate,jdbcType=CHAR}, #{materielCode,jdbcType=VARCHAR}, 
+      #{materialName,jdbcType=VARCHAR}, #{materialFullname,jdbcType=VARCHAR}, #{potting,jdbcType=VARCHAR}, 
+      #{norms,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, 
+      #{pkSupplier,jdbcType=VARCHAR}, #{pkAgent,jdbcType=VARCHAR}, #{trafficType,jdbcType=VARCHAR}, 
+      #{purchaseType,jdbcType=VARCHAR}, #{inclutax,jdbcType=CHAR}, #{usageUnit,jdbcType=VARCHAR}, 
+      #{countNum,jdbcType=INTEGER}, #{unitPrice,jdbcType=DOUBLE}, #{amountMoney,jdbcType=DOUBLE}, 
+      #{incomeTax,jdbcType=DOUBLE}, #{taxUnitPrice,jdbcType=DOUBLE}, #{priceTaxTotal,jdbcType=DOUBLE}, 
+      #{batchNum,jdbcType=VARCHAR}, #{expireDate,jdbcType=CHAR}, #{taxRate,jdbcType=DOUBLE}, 
+      #{creator,jdbcType=INTEGER}, #{creationtime,jdbcType=CHAR}, #{ts,jdbcType=CHAR}, 
+      #{dr,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hups.purchase.entity.BdMaterielDataBase" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkDbMateriel">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bd_materiel_data_base
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pkDbMateriel != null" >
+        pk_db_materiel,
+      </if>
+      <if test="materielDate != null" >
+        materiel_date,
+      </if>
+      <if test="materielCode != null" >
+        materiel_code,
+      </if>
+      <if test="materialName != null" >
+        material_name,
+      </if>
+      <if test="materialFullname != null" >
+        material_fullname,
+      </if>
+      <if test="potting != null" >
+        potting,
+      </if>
+      <if test="norms != null" >
+        norms,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="brand != null" >
+        brand,
+      </if>
+      <if test="pkSupplier != null" >
+        pk_supplier,
+      </if>
+      <if test="pkAgent != null" >
+        pk_agent,
+      </if>
+      <if test="trafficType != null" >
+        traffic_type,
+      </if>
+      <if test="purchaseType != null" >
+        purchase_type,
+      </if>
+      <if test="inclutax != null" >
+        inclutax,
+      </if>
+      <if test="usageUnit != null" >
+        usage_unit,
+      </if>
+      <if test="countNum != null" >
+        count_num,
+      </if>
+      <if test="unitPrice != null" >
+        unit_price,
+      </if>
+      <if test="amountMoney != null" >
+        amount_money,
+      </if>
+      <if test="incomeTax != null" >
+        income_tax,
+      </if>
+      <if test="taxUnitPrice != null" >
+        tax_unit_price,
+      </if>
+      <if test="priceTaxTotal != null" >
+        price_tax_total,
+      </if>
+      <if test="batchNum != null" >
+        batch_num,
+      </if>
+      <if test="expireDate != null" >
+        expire_date,
+      </if>
+      <if test="taxRate != null" >
+        tax_rate,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creationtime != null" >
+        creationtime,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pkDbMateriel != null" >
+        #{pkDbMateriel,jdbcType=INTEGER},
+      </if>
+      <if test="materielDate != null" >
+        #{materielDate,jdbcType=CHAR},
+      </if>
+      <if test="materielCode != null" >
+        #{materielCode,jdbcType=VARCHAR},
+      </if>
+      <if test="materialName != null" >
+        #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="materialFullname != null" >
+        #{materialFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="potting != null" >
+        #{potting,jdbcType=VARCHAR},
+      </if>
+      <if test="norms != null" >
+        #{norms,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="pkSupplier != null" >
+        #{pkSupplier,jdbcType=VARCHAR},
+      </if>
+      <if test="pkAgent != null" >
+        #{pkAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="trafficType != null" >
+        #{trafficType,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseType != null" >
+        #{purchaseType,jdbcType=VARCHAR},
+      </if>
+      <if test="inclutax != null" >
+        #{inclutax,jdbcType=CHAR},
+      </if>
+      <if test="usageUnit != null" >
+        #{usageUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="countNum != null" >
+        #{countNum,jdbcType=INTEGER},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="amountMoney != null" >
+        #{amountMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="incomeTax != null" >
+        #{incomeTax,jdbcType=DOUBLE},
+      </if>
+      <if test="taxUnitPrice != null" >
+        #{taxUnitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="priceTaxTotal != null" >
+        #{priceTaxTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="batchNum != null" >
+        #{batchNum,jdbcType=VARCHAR},
+      </if>
+      <if test="expireDate != null" >
+        #{expireDate,jdbcType=CHAR},
+      </if>
+      <if test="taxRate != null" >
+        #{taxRate,jdbcType=DOUBLE},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.hups.purchase.entity.BdMaterielDataBaseExample" resultType="java.lang.Integer" >
+    select count(*) from bd_materiel_data_base
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bd_materiel_data_base
+    <set >
+      <if test="record.pkDbMateriel != null" >
+        pk_db_materiel = #{record.pkDbMateriel,jdbcType=INTEGER},
+      </if>
+      <if test="record.materielDate != null" >
+        materiel_date = #{record.materielDate,jdbcType=CHAR},
+      </if>
+      <if test="record.materielCode != null" >
+        materiel_code = #{record.materielCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.materialName != null" >
+        material_name = #{record.materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.materialFullname != null" >
+        material_fullname = #{record.materialFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.potting != null" >
+        potting = #{record.potting,jdbcType=VARCHAR},
+      </if>
+      <if test="record.norms != null" >
+        norms = #{record.norms,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brand != null" >
+        brand = #{record.brand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkSupplier != null" >
+        pk_supplier = #{record.pkSupplier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkAgent != null" >
+        pk_agent = #{record.pkAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trafficType != null" >
+        traffic_type = #{record.trafficType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.purchaseType != null" >
+        purchase_type = #{record.purchaseType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inclutax != null" >
+        inclutax = #{record.inclutax,jdbcType=CHAR},
+      </if>
+      <if test="record.usageUnit != null" >
+        usage_unit = #{record.usageUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countNum != null" >
+        count_num = #{record.countNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.unitPrice != null" >
+        unit_price = #{record.unitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.amountMoney != null" >
+        amount_money = #{record.amountMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.incomeTax != null" >
+        income_tax = #{record.incomeTax,jdbcType=DOUBLE},
+      </if>
+      <if test="record.taxUnitPrice != null" >
+        tax_unit_price = #{record.taxUnitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.priceTaxTotal != null" >
+        price_tax_total = #{record.priceTaxTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="record.batchNum != null" >
+        batch_num = #{record.batchNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expireDate != null" >
+        expire_date = #{record.expireDate,jdbcType=CHAR},
+      </if>
+      <if test="record.taxRate != null" >
+        tax_rate = #{record.taxRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationtime != null" >
+        creationtime = #{record.creationtime,jdbcType=CHAR},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=CHAR},
+      </if>
+      <if test="record.dr != null" >
+        dr = #{record.dr,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bd_materiel_data_base
+    set pk_db_materiel = #{record.pkDbMateriel,jdbcType=INTEGER},
+      materiel_date = #{record.materielDate,jdbcType=CHAR},
+      materiel_code = #{record.materielCode,jdbcType=VARCHAR},
+      material_name = #{record.materialName,jdbcType=VARCHAR},
+      material_fullname = #{record.materialFullname,jdbcType=VARCHAR},
+      potting = #{record.potting,jdbcType=VARCHAR},
+      norms = #{record.norms,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      brand = #{record.brand,jdbcType=VARCHAR},
+      pk_supplier = #{record.pkSupplier,jdbcType=VARCHAR},
+      pk_agent = #{record.pkAgent,jdbcType=VARCHAR},
+      traffic_type = #{record.trafficType,jdbcType=VARCHAR},
+      purchase_type = #{record.purchaseType,jdbcType=VARCHAR},
+      inclutax = #{record.inclutax,jdbcType=CHAR},
+      usage_unit = #{record.usageUnit,jdbcType=VARCHAR},
+      count_num = #{record.countNum,jdbcType=INTEGER},
+      unit_price = #{record.unitPrice,jdbcType=DOUBLE},
+      amount_money = #{record.amountMoney,jdbcType=DOUBLE},
+      income_tax = #{record.incomeTax,jdbcType=DOUBLE},
+      tax_unit_price = #{record.taxUnitPrice,jdbcType=DOUBLE},
+      price_tax_total = #{record.priceTaxTotal,jdbcType=DOUBLE},
+      batch_num = #{record.batchNum,jdbcType=VARCHAR},
+      expire_date = #{record.expireDate,jdbcType=CHAR},
+      tax_rate = #{record.taxRate,jdbcType=DOUBLE},
+      creator = #{record.creator,jdbcType=INTEGER},
+      creationtime = #{record.creationtime,jdbcType=CHAR},
+      ts = #{record.ts,jdbcType=CHAR},
+      dr = #{record.dr,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hups.purchase.entity.BdMaterielDataBase" >
+    update bd_materiel_data_base
+    <set >
+      <if test="materielDate != null" >
+        materiel_date = #{materielDate,jdbcType=CHAR},
+      </if>
+      <if test="materielCode != null" >
+        materiel_code = #{materielCode,jdbcType=VARCHAR},
+      </if>
+      <if test="materialName != null" >
+        material_name = #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="materialFullname != null" >
+        material_fullname = #{materialFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="potting != null" >
+        potting = #{potting,jdbcType=VARCHAR},
+      </if>
+      <if test="norms != null" >
+        norms = #{norms,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="pkSupplier != null" >
+        pk_supplier = #{pkSupplier,jdbcType=VARCHAR},
+      </if>
+      <if test="pkAgent != null" >
+        pk_agent = #{pkAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="trafficType != null" >
+        traffic_type = #{trafficType,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseType != null" >
+        purchase_type = #{purchaseType,jdbcType=VARCHAR},
+      </if>
+      <if test="inclutax != null" >
+        inclutax = #{inclutax,jdbcType=CHAR},
+      </if>
+      <if test="usageUnit != null" >
+        usage_unit = #{usageUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="countNum != null" >
+        count_num = #{countNum,jdbcType=INTEGER},
+      </if>
+      <if test="unitPrice != null" >
+        unit_price = #{unitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="amountMoney != null" >
+        amount_money = #{amountMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="incomeTax != null" >
+        income_tax = #{incomeTax,jdbcType=DOUBLE},
+      </if>
+      <if test="taxUnitPrice != null" >
+        tax_unit_price = #{taxUnitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="priceTaxTotal != null" >
+        price_tax_total = #{priceTaxTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="batchNum != null" >
+        batch_num = #{batchNum,jdbcType=VARCHAR},
+      </if>
+      <if test="expireDate != null" >
+        expire_date = #{expireDate,jdbcType=CHAR},
+      </if>
+      <if test="taxRate != null" >
+        tax_rate = #{taxRate,jdbcType=DOUBLE},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        creationtime = #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+    </set>
+    where pk_db_materiel = #{pkDbMateriel,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hups.purchase.entity.BdMaterielDataBase" >
+    update bd_materiel_data_base
+    set materiel_date = #{materielDate,jdbcType=CHAR},
+      materiel_code = #{materielCode,jdbcType=VARCHAR},
+      material_name = #{materialName,jdbcType=VARCHAR},
+      material_fullname = #{materialFullname,jdbcType=VARCHAR},
+      potting = #{potting,jdbcType=VARCHAR},
+      norms = #{norms,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      pk_supplier = #{pkSupplier,jdbcType=VARCHAR},
+      pk_agent = #{pkAgent,jdbcType=VARCHAR},
+      traffic_type = #{trafficType,jdbcType=VARCHAR},
+      purchase_type = #{purchaseType,jdbcType=VARCHAR},
+      inclutax = #{inclutax,jdbcType=CHAR},
+      usage_unit = #{usageUnit,jdbcType=VARCHAR},
+      count_num = #{countNum,jdbcType=INTEGER},
+      unit_price = #{unitPrice,jdbcType=DOUBLE},
+      amount_money = #{amountMoney,jdbcType=DOUBLE},
+      income_tax = #{incomeTax,jdbcType=DOUBLE},
+      tax_unit_price = #{taxUnitPrice,jdbcType=DOUBLE},
+      price_tax_total = #{priceTaxTotal,jdbcType=DOUBLE},
+      batch_num = #{batchNum,jdbcType=VARCHAR},
+      expire_date = #{expireDate,jdbcType=CHAR},
+      tax_rate = #{taxRate,jdbcType=DOUBLE},
+      creator = #{creator,jdbcType=INTEGER},
+      creationtime = #{creationtime,jdbcType=CHAR},
+      ts = #{ts,jdbcType=CHAR},
+      dr = #{dr,jdbcType=INTEGER}
+    where pk_db_materiel = #{pkDbMateriel,jdbcType=INTEGER}
+  </update>
+</mapper>

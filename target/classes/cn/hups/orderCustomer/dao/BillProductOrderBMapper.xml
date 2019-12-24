@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.hups.orderCustomer.dao.BillProductOrderBMapper" >
+  <resultMap id="BaseResultMap" type="cn.hups.orderCustomer.entity.BillProductOrderB" >
+    <constructor >
+      <idArg column="pk_product_order_b" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pk_product_order" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pk_product" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="product_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="memo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="bill_state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creator" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creationtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="dr" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ts" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="task_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="process_instance_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="approver" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="approvetime" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pk_product_order_b, pk_product_order, pk_product, product_num, memo, bill_state, 
+    creator, creationtime, dr, ts, task_id, process_instance_id, approver, approvetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.hups.orderCustomer.entity.BillProductOrderBExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bill_product_order_b
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bill_product_order_b
+    where pk_product_order_b = #{pkProductOrderB,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bill_product_order_b
+    where pk_product_order_b = #{pkProductOrderB,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.hups.orderCustomer.entity.BillProductOrderBExample" >
+    delete from bill_product_order_b
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.hups.orderCustomer.entity.BillProductOrderB" >
+    insert into bill_product_order_b (pk_product_order_b, pk_product_order, 
+      pk_product, product_num, memo, 
+      bill_state, creator, creationtime, 
+      dr, ts, task_id, process_instance_id, 
+      approver, approvetime)
+    values (#{pkProductOrderB,jdbcType=INTEGER}, #{pkProductOrder,jdbcType=INTEGER}, 
+      #{pkProduct,jdbcType=INTEGER}, #{productNum,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR}, 
+      #{billState,jdbcType=INTEGER}, #{creator,jdbcType=INTEGER}, #{creationtime,jdbcType=CHAR}, 
+      #{dr,jdbcType=INTEGER}, #{ts,jdbcType=CHAR}, #{taskId,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR}, 
+      #{approver,jdbcType=INTEGER}, #{approvetime,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hups.orderCustomer.entity.BillProductOrderB" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkProductOrderB">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bill_product_order_b
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pkProductOrderB != null" >
+        pk_product_order_b,
+      </if>
+      <if test="pkProductOrder != null" >
+        pk_product_order,
+      </if>
+      <if test="pkProduct != null" >
+        pk_product,
+      </if>
+      <if test="productNum != null" >
+        product_num,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="billState != null" >
+        bill_state,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creationtime != null" >
+        creationtime,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="processInstanceId != null" >
+        process_instance_id,
+      </if>
+      <if test="approver != null" >
+        approver,
+      </if>
+      <if test="approvetime != null" >
+        approvetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pkProductOrderB != null" >
+        #{pkProductOrderB,jdbcType=INTEGER},
+      </if>
+      <if test="pkProductOrder != null" >
+        #{pkProductOrder,jdbcType=INTEGER},
+      </if>
+      <if test="pkProduct != null" >
+        #{pkProduct,jdbcType=INTEGER},
+      </if>
+      <if test="productNum != null" >
+        #{productNum,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="billState != null" >
+        #{billState,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=CHAR},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="processInstanceId != null" >
+        #{processInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        #{approver,jdbcType=INTEGER},
+      </if>
+      <if test="approvetime != null" >
+        #{approvetime,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.hups.orderCustomer.entity.BillProductOrderBExample" resultType="java.lang.Integer" >
+    select count(*) from bill_product_order_b
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bill_product_order_b
+    <set >
+      <if test="record.pkProductOrderB != null" >
+        pk_product_order_b = #{record.pkProductOrderB,jdbcType=INTEGER},
+      </if>
+      <if test="record.pkProductOrder != null" >
+        pk_product_order = #{record.pkProductOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.pkProduct != null" >
+        pk_product = #{record.pkProduct,jdbcType=INTEGER},
+      </if>
+      <if test="record.productNum != null" >
+        product_num = #{record.productNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.billState != null" >
+        bill_state = #{record.billState,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationtime != null" >
+        creationtime = #{record.creationtime,jdbcType=CHAR},
+      </if>
+      <if test="record.dr != null" >
+        dr = #{record.dr,jdbcType=INTEGER},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=CHAR},
+      </if>
+      <if test="record.taskId != null" >
+        task_id = #{record.taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processInstanceId != null" >
+        process_instance_id = #{record.processInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approver != null" >
+        approver = #{record.approver,jdbcType=INTEGER},
+      </if>
+      <if test="record.approvetime != null" >
+        approvetime = #{record.approvetime,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bill_product_order_b
+    set pk_product_order_b = #{record.pkProductOrderB,jdbcType=INTEGER},
+      pk_product_order = #{record.pkProductOrder,jdbcType=INTEGER},
+      pk_product = #{record.pkProduct,jdbcType=INTEGER},
+      product_num = #{record.productNum,jdbcType=INTEGER},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      bill_state = #{record.billState,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=INTEGER},
+      creationtime = #{record.creationtime,jdbcType=CHAR},
+      dr = #{record.dr,jdbcType=INTEGER},
+      ts = #{record.ts,jdbcType=CHAR},
+      task_id = #{record.taskId,jdbcType=VARCHAR},
+      process_instance_id = #{record.processInstanceId,jdbcType=VARCHAR},
+      approver = #{record.approver,jdbcType=INTEGER},
+      approvetime = #{record.approvetime,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hups.orderCustomer.entity.BillProductOrderB" >
+    update bill_product_order_b
+    <set >
+      <if test="pkProductOrder != null" >
+        pk_product_order = #{pkProductOrder,jdbcType=INTEGER},
+      </if>
+      <if test="pkProduct != null" >
+        pk_product = #{pkProduct,jdbcType=INTEGER},
+      </if>
+      <if test="productNum != null" >
+        product_num = #{productNum,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="billState != null" >
+        bill_state = #{billState,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        creationtime = #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=CHAR},
+      </if>
+      <if test="taskId != null" >
+        task_id = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="processInstanceId != null" >
+        process_instance_id = #{processInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        approver = #{approver,jdbcType=INTEGER},
+      </if>
+      <if test="approvetime != null" >
+        approvetime = #{approvetime,jdbcType=CHAR},
+      </if>
+    </set>
+    where pk_product_order_b = #{pkProductOrderB,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hups.orderCustomer.entity.BillProductOrderB" >
+    update bill_product_order_b
+    set pk_product_order = #{pkProductOrder,jdbcType=INTEGER},
+      pk_product = #{pkProduct,jdbcType=INTEGER},
+      product_num = #{productNum,jdbcType=INTEGER},
+      memo = #{memo,jdbcType=VARCHAR},
+      bill_state = #{billState,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=INTEGER},
+      creationtime = #{creationtime,jdbcType=CHAR},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=CHAR},
+      task_id = #{taskId,jdbcType=VARCHAR},
+      process_instance_id = #{processInstanceId,jdbcType=VARCHAR},
+      approver = #{approver,jdbcType=INTEGER},
+      approvetime = #{approvetime,jdbcType=CHAR}
+    where pk_product_order_b = #{pkProductOrderB,jdbcType=INTEGER}
+  </update>
+</mapper>

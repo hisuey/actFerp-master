@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.customer.dao.CustomInfoMapper">
+
+    <resultMap id="customInfo" type="cn.hups.customer.po.CustomerInfoPo">
+        <result column="pkCustomer" property="pkCustomer" jdbcType="INTEGER" />
+        <collection property="bdCustomerPo" ofType="cn.hups.customer.po.BdCustomer" select="selectCustomByPkCustomer" column="pkCustomer"/>
+        <collection property="bdTakeoverPoList" ofType="cn.hups.customer.po.BdTakeoverPo" select="selectTaskoverByPkCustomer" column="pkCustomer"/>
+        <collection property="bdInvoicePo" ofType="cn.hups.customer.po.BdInvoicePo" select="selectInvoiceByPkCustomer" column="pkCustomer"/>
+        <collection property="bdCustomdocPoList" ofType="cn.hups.customer.po.BdCustomdocPo" select="selectCustomdocByPkCustomer" column="pkCustomer"/>
+    </resultMap>
+
+    <!--查询客户信息-->
+    <select id="selectPkCustomer" resultMap="customInfo">
+        SELECT
+        bc.pk_customer as pkCustomer
+        FROM
+        bd_customer bc
+        WHERE
+        bc.dr = 0
+        <if test="pkCustomer != null">
+            and bc.pk_customer = #{pkCustomer}
+        </if>
+    </select>
+
+    <!--查询客户信息-->
+    <select id="selectCustomByPkCustomer" resultType="cn.hups.customer.po.BdCustomerPo">
+        SELECT
+        bc.pk_customer as pkCustomer,
+        bc.name,
+        bc.code,
+        bc.sex,
+        bc.corpname,
+        bc.corpaddress,
+        bc.tel,
+        bc.trade,
+        bc.memo,
+        bc.password,
+        bc.creator,
+        bc.creationtime,
+        bc.modifier,
+        bc.modifiedtime,
+        bc.dr,
+        bc.ts
+        FROM
+        bd_customer bc
+        WHERE
+        bc.dr = 0
+        and bc.pk_customer = #{pkCustomer}
+    </select>
+
+    <!--查询客户收货信息-->
+    <select id="selectTaskoverByPkCustomer" resultType="cn.hups.customer.po.BdTakeoverPo">
+        SELECT
+        btk.pk_takeover as pkTakeover,
+        btk.pk_customer as pkCustomer,
+        btk.address,
+        btk.takeover_psn as takeoverPsn,
+        btk.takeover_tel as takeoverTel,
+        btk.defaultis,
+        btk.creator,
+        btk.creationtime,
+        btk.dr,
+        btk.ts
+        FROM
+        bd_takeover btk
+        WHERE
+        btk.dr = 0
+        and btk.pk_customer = #{pkCustomer}
+    </select>
+
+    <!--查询客户开票信息-->
+    <select id="selectInvoiceByPkCustomer" resultType="cn.hups.customer.po.BdInvoicePo">
+        SELECT
+        biv.pk_invoice as pkInvoice,
+        biv.pk_customer as pkCustomer,
+        biv.corpname,
+        biv.dutynum,
+        biv.invoice_address as invoiceAddress,
+        biv.invoice_tel as invoiceTel,
+        biv.invoice_bank as invoiceBank,
+        biv.invoice_account as invoiceAccount,
+        biv.addressee,
+        biv.addressee_tel as addresseeTel,
+        biv.addressee_adrs as addresseeAdrs,
+        biv.creator,
+        biv.creationtime,
+        biv.dr,
+        biv.ts
+        FROM
+        bd_invoice biv
+        WHERE
+        biv.dr = 0
+        and biv.pk_customer = #{pkCustomer}
+    </select>
+
+    <!--查询客户人员信息-->
+    <select id="selectCustomdocByPkCustomer" resultType="cn.hups.customer.po.BdCustomdocPo">
+        SELECT
+        bdoc.pk_customdoc as pkCustomdoc,
+        bdoc.pk_customer as pkCustomer,
+        bdoc.customname,
+        bdoc.telnum,
+        bdoc.sex,
+        bdoc.customtype,
+        bdoc.defaultis,
+        bdoc.creator,
+        bdoc.creationtime,
+        bdoc.dr,
+        bdoc.ts
+        FROM
+        bd_customdoc bdoc
+        WHERE
+        bdoc.dr = 0
+        and bdoc.pk_customer = #{pkCustomer}
+    </select>
+
+    <!--更新客户人员类别是否默认为否-->
+    <update id="updateAllCustomdocDefaultNo">
+        update bd_customdoc set defaultis = '否'
+        WHERE pk_customer=#{pkCustomer} and customtype=#{psnType}
+    </update>
+
+    <!--查询客户设置默认采购、技术联系人-->
+    <select id="selectCustomdocDefaultPsn" resultType="cn.hups.customer.entity.BdCustomdoc">
+        select
+        pk_customdoc as pkCustomdoc,
+        pk_customer as pkCustomer,
+        telnum,
+        customname,
+        customtype
+        FROM
+        bd_customdoc
+        WHERE defaultis = '是' and dr = 0 and pk_customer = #{pkCustomer}
+    </select>
+
+    <!--查询所有客户人员档案作为参照-->
+    <select id="selectAllCustomdocAsRef" resultType="cn.hups.common.po.ClientRefPo">
+        select
+        pk_customdoc as value,
+        customname as label,
+        customtype,
+        telnum as defStr
+        FROM
+        bd_customdoc
+        WHERE dr = 0 and pk_customer = #{pkCustomer}
+    </select>
+</mapper>

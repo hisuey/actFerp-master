@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.rbac.dao.SmUserRoleMapperExpand">
+
+    <!--根据用户ID查询所有用户绑定角色-->
+    <select id="selectAllUserRoleByUserid" resultType="cn.hups.rbac.po.SmUserRolePo">
+        SELECT
+        smr.pk_user_role as pkUserRole,
+        smr.userid,
+        smr.pk_role as pkRole,
+        sr.role_name as roleName
+        FROM
+        sm_user_role smr
+        LEFT JOIN sm_role sr ON smr.pk_role = sr.pk_role AND sr.dr = 0
+        WHERE
+        smr.dr = 0
+        <if test="userid != null and userid != ''">
+            AND smr.userid = #{userid}
+        </if>
+    </select>
+
+    <!--根据用户删除用户绑定角色-->
+    <update id="deleteUserRoleByPkUserid" parameterType="java.lang.Integer">
+        UPDATE sm_user_role SET dr = 1
+        WHERE dr = 0 AND userid = #{userid}
+    </update>
+
+    <!--批量新增用户绑定角色-->
+    <insert id="insertByBatch" parameterType="java.util.List">
+        insert into sm_user_role (pk_user_role, userid, pk_role,
+        creator, creationtime, dr,
+        ts)
+        values
+        <foreach collection="smUserRolePoList" item="item" index="index" separator=",">
+            (#{item.pkUserRole,jdbcType=INTEGER}, #{item.userid,jdbcType=INTEGER}, #{item.pkRole,jdbcType=INTEGER},
+            #{item.creator,jdbcType=INTEGER}, #{item.creationtime,jdbcType=CHAR}, #{item.dr,jdbcType=INTEGER},
+            #{item.ts,jdbcType=CHAR})
+        </foreach>
+    </insert>
+
+</mapper>

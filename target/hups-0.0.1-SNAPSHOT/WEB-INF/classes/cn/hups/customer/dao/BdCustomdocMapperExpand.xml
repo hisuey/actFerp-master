@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.customer.dao.BdCustomdocMapperExpand">
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(pk_customdoc)
+        FROM
+        bd_customdoc
+        WHERE
+        dr = 0
+        <if test="bdCustomdocPo != null and bdCustomdocPo.customname != null and bdCustomdocPo.customname != ''">
+            and customname = #{bdCustomdocPo.customname}
+        </if>
+        <if test="bdCustomdocPo != null and bdCustomdocPo.pkCustomer != null">
+            and pk_customer = #{bdCustomdocPo.pkCustomer}
+        </if>
+        <if test="bdCustomdocPo != null and bdCustomdocPo.customtype != null and bdCustomdocPo.customtype != ''">
+            and customtype = #{bdCustomdocPo.customtype}
+        </if>
+    </select>
+
+    <!--分页查询数据-->
+    <select id="selectAllBdCustomdocAsPage" resultType="cn.hups.customer.po.BdCustomdocPo">
+        SELECT
+        bc.pk_customdoc as pkCustomdoc,
+        bc.pk_customer as pkCustomer,
+        bc.customname,
+        bc.telnum,
+        bc.sex,
+        bc.customtype,
+        bc.customtype as customtypeShow,
+        bc.defaultis,
+        bc.creator,
+        su.user_name as creatorShow,
+        bc.creationtime,
+        bc.dr,
+        bc.ts
+        FROM
+        bd_customdoc bc
+        LEFT JOIN sm_user su on bc.creator = su.userid and su.dr = 0
+        WHERE
+        bc.dr = 0
+        <if test="bdCustomdocPo != null and bdCustomdocPo.customname != null and bdCustomdocPo.customname != ''">
+            and bc.customname = #{bdCustomdocPo.customname}
+        </if>
+        <if test="bdCustomdocPo != null and bdCustomdocPo.pkCustomer != null">
+            and bc.pk_customer = #{bdCustomdocPo.pkCustomer}
+        </if>
+        <if test="bdCustomdocPo != null and bdCustomdocPo.customtype != null and bdCustomdocPo.customtype != ''">
+            and bc.customtype = #{bdCustomdocPo.customtype}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteBdCustomdocByPks" parameterType="java.util.List">
+        UPDATE bd_customdoc SET dr = 1
+        WHERE pk_customdoc in
+        <foreach collection="pkArr" item="pk_customdoc" open="(" close=")" separator=",">
+            #{pk_customdoc}
+        </foreach>
+    </update>
+</mapper>

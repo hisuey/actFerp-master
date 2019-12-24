@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.hups.rbac.dao.SmRoleMapper" >
+  <resultMap id="BaseResultMap" type="cn.hups.rbac.entity.SmRole" >
+    <constructor >
+      <idArg column="pk_role" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="role_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="role_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="role_memo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="role_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pk_org" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pk_group" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creator" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creationtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="modifier" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="modifiedtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="dr" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ts" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pk_role, role_code, role_name, role_memo, role_type, pk_org, pk_group, creator, creationtime, 
+    modifier, modifiedtime, dr, ts
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.hups.rbac.entity.SmRoleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sm_role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sm_role
+    where pk_role = #{pkRole,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sm_role
+    where pk_role = #{pkRole,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.hups.rbac.entity.SmRoleExample" >
+    delete from sm_role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.hups.rbac.entity.SmRole" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkRole">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sm_role (pk_role, role_code, role_name, 
+      role_memo, role_type, pk_org, 
+      pk_group, creator, creationtime, 
+      modifier, modifiedtime, dr, 
+      ts)
+    values (#{pkRole,jdbcType=INTEGER}, #{roleCode,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
+      #{roleMemo,jdbcType=VARCHAR}, #{roleType,jdbcType=VARCHAR}, #{pkOrg,jdbcType=INTEGER}, 
+      #{pkGroup,jdbcType=INTEGER}, #{creator,jdbcType=INTEGER}, #{creationtime,jdbcType=CHAR}, 
+      #{modifier,jdbcType=INTEGER}, #{modifiedtime,jdbcType=CHAR}, #{dr,jdbcType=INTEGER}, 
+      #{ts,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hups.rbac.entity.SmRole" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkRole">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sm_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pkRole != null" >
+        pk_role,
+      </if>
+      <if test="roleCode != null" >
+        role_code,
+      </if>
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="roleMemo != null" >
+        role_memo,
+      </if>
+      <if test="roleType != null" >
+        role_type,
+      </if>
+      <if test="pkOrg != null" >
+        pk_org,
+      </if>
+      <if test="pkGroup != null" >
+        pk_group,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creationtime != null" >
+        creationtime,
+      </if>
+      <if test="modifier != null" >
+        modifier,
+      </if>
+      <if test="modifiedtime != null" >
+        modifiedtime,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pkRole != null" >
+        #{pkRole,jdbcType=INTEGER},
+      </if>
+      <if test="roleCode != null" >
+        #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleMemo != null" >
+        #{roleMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        #{roleType,jdbcType=VARCHAR},
+      </if>
+      <if test="pkOrg != null" >
+        #{pkOrg,jdbcType=INTEGER},
+      </if>
+      <if test="pkGroup != null" >
+        #{pkGroup,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=INTEGER},
+      </if>
+      <if test="modifiedtime != null" >
+        #{modifiedtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.hups.rbac.entity.SmRoleExample" resultType="java.lang.Integer" >
+    select count(*) from sm_role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sm_role
+    <set >
+      <if test="record.pkRole != null" >
+        pk_role = #{record.pkRole,jdbcType=INTEGER},
+      </if>
+      <if test="record.roleCode != null" >
+        role_code = #{record.roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleName != null" >
+        role_name = #{record.roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleMemo != null" >
+        role_memo = #{record.roleMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleType != null" >
+        role_type = #{record.roleType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkOrg != null" >
+        pk_org = #{record.pkOrg,jdbcType=INTEGER},
+      </if>
+      <if test="record.pkGroup != null" >
+        pk_group = #{record.pkGroup,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationtime != null" >
+        creationtime = #{record.creationtime,jdbcType=CHAR},
+      </if>
+      <if test="record.modifier != null" >
+        modifier = #{record.modifier,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifiedtime != null" >
+        modifiedtime = #{record.modifiedtime,jdbcType=CHAR},
+      </if>
+      <if test="record.dr != null" >
+        dr = #{record.dr,jdbcType=INTEGER},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sm_role
+    set pk_role = #{record.pkRole,jdbcType=INTEGER},
+      role_code = #{record.roleCode,jdbcType=VARCHAR},
+      role_name = #{record.roleName,jdbcType=VARCHAR},
+      role_memo = #{record.roleMemo,jdbcType=VARCHAR},
+      role_type = #{record.roleType,jdbcType=VARCHAR},
+      pk_org = #{record.pkOrg,jdbcType=INTEGER},
+      pk_group = #{record.pkGroup,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=INTEGER},
+      creationtime = #{record.creationtime,jdbcType=CHAR},
+      modifier = #{record.modifier,jdbcType=INTEGER},
+      modifiedtime = #{record.modifiedtime,jdbcType=CHAR},
+      dr = #{record.dr,jdbcType=INTEGER},
+      ts = #{record.ts,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hups.rbac.entity.SmRole" >
+    update sm_role
+    <set >
+      <if test="roleCode != null" >
+        role_code = #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleMemo != null" >
+        role_memo = #{roleMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        role_type = #{roleType,jdbcType=VARCHAR},
+      </if>
+      <if test="pkOrg != null" >
+        pk_org = #{pkOrg,jdbcType=INTEGER},
+      </if>
+      <if test="pkGroup != null" >
+        pk_group = #{pkGroup,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        creationtime = #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="modifier != null" >
+        modifier = #{modifier,jdbcType=INTEGER},
+      </if>
+      <if test="modifiedtime != null" >
+        modifiedtime = #{modifiedtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=CHAR},
+      </if>
+    </set>
+    where pk_role = #{pkRole,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hups.rbac.entity.SmRole" >
+    update sm_role
+    set role_code = #{roleCode,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      role_memo = #{roleMemo,jdbcType=VARCHAR},
+      role_type = #{roleType,jdbcType=VARCHAR},
+      pk_org = #{pkOrg,jdbcType=INTEGER},
+      pk_group = #{pkGroup,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=INTEGER},
+      creationtime = #{creationtime,jdbcType=CHAR},
+      modifier = #{modifier,jdbcType=INTEGER},
+      modifiedtime = #{modifiedtime,jdbcType=CHAR},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=CHAR}
+    where pk_role = #{pkRole,jdbcType=INTEGER}
+  </update>
+</mapper>

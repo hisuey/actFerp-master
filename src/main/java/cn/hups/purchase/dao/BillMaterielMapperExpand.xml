@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.purchase.dao.BillMaterielMapperExpand">
+
+    <!--根据产品主键删除物料信息数据-->
+    <update id="deletePurchaseMaterielByPkProduct" parameterType="java.lang.Integer">
+        update bill_materiel set dr = 1 where pk_product = #{pkProduct}
+    </update>
+</mapper>

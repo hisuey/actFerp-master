@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.hups.orgs.dao.BdCorpMapper" >
+  <resultMap id="BaseResultMap" type="cn.hups.orgs.entity.BdCorp" >
+    <constructor >
+      <idArg column="pk_corp" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="unitname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="unitshortname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="unitcode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phone1" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phone2" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phone3" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="industry" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="isseal" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="sealeddate" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="url" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="memo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="def1" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="def2" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="def3" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="def4" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="def5" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="creator" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creationtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="dr" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ts" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pk_corp, unitname, unitshortname, unitcode, phone1, phone2, phone3, industry, isseal, 
+    sealeddate, url, memo, def1, def2, def3, def4, def5, creator, creationtime, dr, ts
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.hups.orgs.entity.BdCorpExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bd_corp
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bd_corp
+    where pk_corp = #{pkCorp,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bd_corp
+    where pk_corp = #{pkCorp,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.hups.orgs.entity.BdCorpExample" >
+    delete from bd_corp
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.hups.orgs.entity.BdCorp" >
+    insert into bd_corp (pk_corp, unitname, unitshortname, 
+      unitcode, phone1, phone2, 
+      phone3, industry, isseal, 
+      sealeddate, url, memo, 
+      def1, def2, def3, def4, 
+      def5, creator, creationtime, 
+      dr, ts)
+    values (#{pkCorp,jdbcType=INTEGER}, #{unitname,jdbcType=VARCHAR}, #{unitshortname,jdbcType=VARCHAR}, 
+      #{unitcode,jdbcType=VARCHAR}, #{phone1,jdbcType=VARCHAR}, #{phone2,jdbcType=VARCHAR}, 
+      #{phone3,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, #{isseal,jdbcType=CHAR}, 
+      #{sealeddate,jdbcType=CHAR}, #{url,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
+      #{def1,jdbcType=VARCHAR}, #{def2,jdbcType=VARCHAR}, #{def3,jdbcType=VARCHAR}, #{def4,jdbcType=VARCHAR}, 
+      #{def5,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}, #{creationtime,jdbcType=CHAR}, 
+      #{dr,jdbcType=INTEGER}, #{ts,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hups.orgs.entity.BdCorp" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkCorp">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bd_corp
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pkCorp != null" >
+        pk_corp,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="unitshortname != null" >
+        unitshortname,
+      </if>
+      <if test="unitcode != null" >
+        unitcode,
+      </if>
+      <if test="phone1 != null" >
+        phone1,
+      </if>
+      <if test="phone2 != null" >
+        phone2,
+      </if>
+      <if test="phone3 != null" >
+        phone3,
+      </if>
+      <if test="industry != null" >
+        industry,
+      </if>
+      <if test="isseal != null" >
+        isseal,
+      </if>
+      <if test="sealeddate != null" >
+        sealeddate,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="def1 != null" >
+        def1,
+      </if>
+      <if test="def2 != null" >
+        def2,
+      </if>
+      <if test="def3 != null" >
+        def3,
+      </if>
+      <if test="def4 != null" >
+        def4,
+      </if>
+      <if test="def5 != null" >
+        def5,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creationtime != null" >
+        creationtime,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pkCorp != null" >
+        #{pkCorp,jdbcType=INTEGER},
+      </if>
+      <if test="unitname != null" >
+        #{unitname,jdbcType=VARCHAR},
+      </if>
+      <if test="unitshortname != null" >
+        #{unitshortname,jdbcType=VARCHAR},
+      </if>
+      <if test="unitcode != null" >
+        #{unitcode,jdbcType=VARCHAR},
+      </if>
+      <if test="phone1 != null" >
+        #{phone1,jdbcType=VARCHAR},
+      </if>
+      <if test="phone2 != null" >
+        #{phone2,jdbcType=VARCHAR},
+      </if>
+      <if test="phone3 != null" >
+        #{phone3,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="isseal != null" >
+        #{isseal,jdbcType=CHAR},
+      </if>
+      <if test="sealeddate != null" >
+        #{sealeddate,jdbcType=CHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="def1 != null" >
+        #{def1,jdbcType=VARCHAR},
+      </if>
+      <if test="def2 != null" >
+        #{def2,jdbcType=VARCHAR},
+      </if>
+      <if test="def3 != null" >
+        #{def3,jdbcType=VARCHAR},
+      </if>
+      <if test="def4 != null" >
+        #{def4,jdbcType=VARCHAR},
+      </if>
+      <if test="def5 != null" >
+        #{def5,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.hups.orgs.entity.BdCorpExample" resultType="java.lang.Integer" >
+    select count(*) from bd_corp
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bd_corp
+    <set >
+      <if test="record.pkCorp != null" >
+        pk_corp = #{record.pkCorp,jdbcType=INTEGER},
+      </if>
+      <if test="record.unitname != null" >
+        unitname = #{record.unitname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitshortname != null" >
+        unitshortname = #{record.unitshortname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitcode != null" >
+        unitcode = #{record.unitcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone1 != null" >
+        phone1 = #{record.phone1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone2 != null" >
+        phone2 = #{record.phone2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone3 != null" >
+        phone3 = #{record.phone3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.industry != null" >
+        industry = #{record.industry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isseal != null" >
+        isseal = #{record.isseal,jdbcType=CHAR},
+      </if>
+      <if test="record.sealeddate != null" >
+        sealeddate = #{record.sealeddate,jdbcType=CHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.def1 != null" >
+        def1 = #{record.def1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.def2 != null" >
+        def2 = #{record.def2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.def3 != null" >
+        def3 = #{record.def3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.def4 != null" >
+        def4 = #{record.def4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.def5 != null" >
+        def5 = #{record.def5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationtime != null" >
+        creationtime = #{record.creationtime,jdbcType=CHAR},
+      </if>
+      <if test="record.dr != null" >
+        dr = #{record.dr,jdbcType=INTEGER},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bd_corp
+    set pk_corp = #{record.pkCorp,jdbcType=INTEGER},
+      unitname = #{record.unitname,jdbcType=VARCHAR},
+      unitshortname = #{record.unitshortname,jdbcType=VARCHAR},
+      unitcode = #{record.unitcode,jdbcType=VARCHAR},
+      phone1 = #{record.phone1,jdbcType=VARCHAR},
+      phone2 = #{record.phone2,jdbcType=VARCHAR},
+      phone3 = #{record.phone3,jdbcType=VARCHAR},
+      industry = #{record.industry,jdbcType=VARCHAR},
+      isseal = #{record.isseal,jdbcType=CHAR},
+      sealeddate = #{record.sealeddate,jdbcType=CHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      def1 = #{record.def1,jdbcType=VARCHAR},
+      def2 = #{record.def2,jdbcType=VARCHAR},
+      def3 = #{record.def3,jdbcType=VARCHAR},
+      def4 = #{record.def4,jdbcType=VARCHAR},
+      def5 = #{record.def5,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=INTEGER},
+      creationtime = #{record.creationtime,jdbcType=CHAR},
+      dr = #{record.dr,jdbcType=INTEGER},
+      ts = #{record.ts,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hups.orgs.entity.BdCorp" >
+    update bd_corp
+    <set >
+      <if test="unitname != null" >
+        unitname = #{unitname,jdbcType=VARCHAR},
+      </if>
+      <if test="unitshortname != null" >
+        unitshortname = #{unitshortname,jdbcType=VARCHAR},
+      </if>
+      <if test="unitcode != null" >
+        unitcode = #{unitcode,jdbcType=VARCHAR},
+      </if>
+      <if test="phone1 != null" >
+        phone1 = #{phone1,jdbcType=VARCHAR},
+      </if>
+      <if test="phone2 != null" >
+        phone2 = #{phone2,jdbcType=VARCHAR},
+      </if>
+      <if test="phone3 != null" >
+        phone3 = #{phone3,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        industry = #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="isseal != null" >
+        isseal = #{isseal,jdbcType=CHAR},
+      </if>
+      <if test="sealeddate != null" >
+        sealeddate = #{sealeddate,jdbcType=CHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="def1 != null" >
+        def1 = #{def1,jdbcType=VARCHAR},
+      </if>
+      <if test="def2 != null" >
+        def2 = #{def2,jdbcType=VARCHAR},
+      </if>
+      <if test="def3 != null" >
+        def3 = #{def3,jdbcType=VARCHAR},
+      </if>
+      <if test="def4 != null" >
+        def4 = #{def4,jdbcType=VARCHAR},
+      </if>
+      <if test="def5 != null" >
+        def5 = #{def5,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        creationtime = #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=CHAR},
+      </if>
+    </set>
+    where pk_corp = #{pkCorp,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hups.orgs.entity.BdCorp" >
+    update bd_corp
+    set unitname = #{unitname,jdbcType=VARCHAR},
+      unitshortname = #{unitshortname,jdbcType=VARCHAR},
+      unitcode = #{unitcode,jdbcType=VARCHAR},
+      phone1 = #{phone1,jdbcType=VARCHAR},
+      phone2 = #{phone2,jdbcType=VARCHAR},
+      phone3 = #{phone3,jdbcType=VARCHAR},
+      industry = #{industry,jdbcType=VARCHAR},
+      isseal = #{isseal,jdbcType=CHAR},
+      sealeddate = #{sealeddate,jdbcType=CHAR},
+      url = #{url,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      def1 = #{def1,jdbcType=VARCHAR},
+      def2 = #{def2,jdbcType=VARCHAR},
+      def3 = #{def3,jdbcType=VARCHAR},
+      def4 = #{def4,jdbcType=VARCHAR},
+      def5 = #{def5,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      creationtime = #{creationtime,jdbcType=CHAR},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=CHAR}
+    where pk_corp = #{pkCorp,jdbcType=INTEGER}
+  </update>
+</mapper>

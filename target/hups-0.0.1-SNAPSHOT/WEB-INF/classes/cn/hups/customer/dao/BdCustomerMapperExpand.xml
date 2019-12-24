@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.customer.dao.BdCustomerMapperExpand">
+
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(pk_customer)
+        FROM
+        bd_customer
+        WHERE
+        dr = 0
+        <if test="bdCustomerPo != null and bdCustomerPo.name != null and bdCustomerPo.name != ''">
+            and name = #{bdCustomerPo.name}
+        </if>
+    </select>
+
+    <!--分页查询数据-->
+    <select id="selectAllCustomerAsPage" resultType="cn.hups.customer.po.BdCustomerPo">
+        SELECT
+        bc.pk_customer as pkCustomer,
+        bc.name,
+        bc.code,
+        bc.sex,
+        bc.corpname,
+        bc.corpaddress,
+        bc.tel,
+        bc.trade,
+        bc.memo,
+        bc.creator,
+        su.user_name as creatorShow,
+        bc.creationtime,
+        bc.modifier,
+        smo.modifier as modifierShow,
+        bc.modifiedtime,
+        bc.dr,
+        bc.ts,
+        bc.pk_psndoc as pkPsndoc
+        FROM
+        bd_customer bc
+        LEFT JOIN sm_user su on bc.creator = su.userid and su.dr = 0
+        LEFT JOIN sm_user smo on bc.modifier = smo.userid and smo.dr = 0
+        WHERE
+        bc.dr = 0
+        <if test="bdCustomerPo != null and bdCustomerPo.name != null and bdCustomerPo.name != ''">
+            and bc.name = #{bdCustomerPo.name}
+        </if>
+    </select>
+
+    <!--通过电话号码查询客户信息-->
+    <select id="selectCustomerByTel" resultType="cn.hups.customer.po.BdCustomerPo">
+        SELECT
+        bc.pk_customer as pkCustomer,
+        bc.name,
+        bc.code,
+        bc.sex,
+        bc.corpname,
+        bc.corpaddress,
+        bc.tel,
+        bc.trade,
+        bc.memo,
+        bc.password,
+        bc.creator,
+        bc.creationtime,
+        bc.modifier,
+        bc.modifiedtime,
+        bc.dr,
+        bc.ts,
+        bc.pk_psndoc as pkPsndoc
+        FROM
+        bd_customer bc
+        WHERE bc.dr = 0
+        <if test="tel != null and tel != ''">
+            AND bc.tel = #{tel}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteCustomerByPks" parameterType="java.util.List">
+        UPDATE bd_customer SET dr = 1
+        WHERE pk_customer in
+        <foreach collection="pkArr" item="pk_customer" open="(" close=")" separator=",">
+            #{pk_customer}
+        </foreach>
+    </update>
+
+    <!--查询数据作为参照-->
+    <select id="selectAllCustomerAsRef" resultType="cn.hups.common.po.ClientRefPo">
+        SELECT
+        bc.pk_customer as value,
+        bc.name as label,
+        bc.code
+        FROM
+        bd_customer bc
+        WHERE
+        bc.dr = 0
+    </select>
+</mapper>

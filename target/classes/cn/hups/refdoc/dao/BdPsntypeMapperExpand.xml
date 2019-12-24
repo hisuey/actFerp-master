@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.refdoc.dao.BdPsntypeMapperExpand">
+
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(pk_psntype)
+        FROM
+        bd_psntype
+        WHERE
+        dr = 0
+        <if test="bdPsntypePo != null and bdPsntypePo.psntypename != null and bdPsntypePo.psntypename != ''">
+            and psntypename = #{bdPsntypePo.psntypename}
+        </if>
+    </select>
+
+    <!--分页查询数据-->
+    <select id="selectAllPsnTypeAsPage" resultType="cn.hups.refdoc.po.BdPsntypePo">
+        SELECT
+        bt.pk_psntype as pkPsntype,
+        bt.psntypecode,
+        bt.psntypename,
+        bt.creator,
+        su.user_name as creatorShow,
+        bt.creationtime,
+        bt.dr,
+        bt.ts
+        FROM
+        bd_psntype bt
+        LEFT JOIN sm_user su on bt.creator = su.userid and su.dr = 0
+        WHERE
+        bt.dr = 0
+        <if test="bdPsntypePo != null and bdPsntypePo.psntypename != null and bdPsntypePo.psntypename != ''">
+            and bt.psntypename = #{bdPsntypePo.psntypename}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deletePsntypeByPks" parameterType="java.util.List">
+        UPDATE bd_psntype SET dr = 1
+        WHERE pk_psntype in
+        <foreach collection="pkArr" item="pk_psntype" open="(" close=")" separator=",">
+            #{pk_psntype}
+        </foreach>
+    </update>
+
+    <!--查询所有人员类别作为参照-->
+    <select id="selectAllPsntypeAsRef" resultType="cn.hups.common.po.ClientRefPo">
+        SELECT
+        pk_psntype as value,
+        psntypename as label
+        FROM
+        bd_psntype
+        WHERE
+        dr = 0
+    </select>
+</mapper>

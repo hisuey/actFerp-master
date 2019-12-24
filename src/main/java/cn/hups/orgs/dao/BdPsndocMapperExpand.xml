@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.orgs.dao.BdPsndocMapperExpand">
+
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(pk_psndoc)
+        FROM
+        bd_psndoc
+        WHERE
+        dr = 0
+        <if test="bdPsndocPo != null and bdPsndocPo.psnname != null and bdPsndocPo.psnname != ''">
+            and psnname = #{bdPsndocPo.psnname}
+        </if>
+    </select>
+
+    <!--分页查询数据-->
+    <select id="selectAllBdPsndocAsPage" resultType="cn.hups.orgs.po.BdPsndocPo">
+        SELECT
+        psn.pk_psndoc as pkPsndoc,
+        psn.psnname,
+        psn.psncode,
+        psn.pk_corp as pkCorp,
+        corp.unitname as pkCorpShow,
+        psn.pk_deptdoc as pkDeptdoc,
+        dept.deptname as pkDeptdocShow,
+        psn.pk_psntype as pkPsntype,
+        psn.sealdate,
+        psn.directleader,
+        psn.erpid,
+        psn.erptype,
+        psn.def1,
+        psn.def2,
+        psn.def3,
+        psn.def4,
+        psn.def5,
+        psn.creator,
+        su.user_name as creatorShow,
+        psn.creationtime,
+        psn.dr,
+        psn.ts
+        FROM
+        bd_psndoc psn
+        LEFT JOIN sm_user su on psn.creator = su.userid and su.dr = 0
+        LEFT JOIN bd_corp corp on psn.pk_corp = corp.pk_corp and corp.dr = 0
+        LEFT JOIN bd_deptdoc dept on psn.pk_deptdoc = dept.pk_deptdoc and dept.dr = 0
+        WHERE
+        psn.dr = 0
+        <if test="bdPsndocPo != null and bdPsndocPo.psnname != null and bdPsndocPo.psnname != ''">
+            and psn.psnname = #{bdPsndocPo.psnname}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteBdPsndocByPks" parameterType="java.util.List">
+        UPDATE bd_psndoc SET dr = 1
+        WHERE pk_psndoc in
+        <foreach collection="pkArr" item="pk_psndoc" open="(" close=")" separator=",">
+            #{pk_psndoc}
+        </foreach>
+    </update>
+
+    <!--查询所有数据作为参照-->
+    <select id="selectAllPsndocAsRef" resultType="cn.hups.common.po.ClientRefPo">
+        SELECT
+        bp.pk_psndoc as value,
+        bp.psnname as label
+        FROM
+        bd_psndoc bp
+        LEFT JOIN bd_psntype bt ON bp.pk_psntype = bt.pk_psntype and bt.dr = 0
+        where bp.dr = 0
+        <if test="bdPsndocPo != null and bdPsndocPo.pkPsntypeName != null and bdPsndocPo.pkPsntypeName != ''">
+            and bt.psntypename = #{bdPsndocPo.pkPsntypeName}
+        </if>
+    </select>
+
+    <!--通过用户主键信息查询钉钉对应的人员主键-->
+    <select id="selectDingErpIdByUserid" resultType="cn.hups.orgs.po.BdPsndocPo">
+        SELECT
+            bp.erpid
+        FROM
+            bd_psndoc bp
+            LEFT JOIN sm_user su ON su.pk_psndoc = bp.pk_psndoc
+            AND su.dr = 0
+        WHERE
+            bp.dr = 0
+            AND su.userid IN
+            <foreach collection="pkUseridArr" item="userid" open="(" close=")" separator=",">
+                #{userid}
+            </foreach>
+            AND bp.erptype = 'dingding'
+    </select>
+</mapper>

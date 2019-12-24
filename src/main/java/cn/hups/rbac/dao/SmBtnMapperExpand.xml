@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.rbac.dao.SmBtnMapperExpand">
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(pk_btn)
+        FROM
+        sm_btn
+        WHERE
+        dr = 0
+        <if test="smBtnPo != null and smBtnPo.btnName != null and smBtnPo.btnName != ''">
+            and btn_name = #{smBtnPo.btnName}
+        </if>
+    </select>
+
+    <!--分页查询所有系统按钮-->
+    <select id="selectAllBtnAsPage" resultType="cn.hups.rbac.po.SmBtnPo">
+        SELECT
+        sb.pk_btn as pkBtn,
+        sb.btn_code as btnCode,
+        sb.btn_name as btnName,
+        sb.creator,
+        su.user_name as creatorShow,
+        sb.creationtime,
+        sb.dr,
+        sb.ts
+        FROM
+        sm_btn sb
+        WHERE
+        sb.dr = 0
+        LEFT JOIN sm_user su on sb.creator = su.userid and su.dr = 0
+        <if test="smBtnPo != null and smBtnPo.btnName != null and smBtnPo.btnName != ''">
+            and sb.btn_name = #{smBtnPo.btnName}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteSmBtnByPks" parameterType="java.util.List">
+        UPDATE sm_btn SET dr = 1
+        WHERE pk_btn in
+        <foreach collection="pkArr" item="pk_btn" open="(" close=")" separator=",">
+            #{pk_btn}
+        </foreach>
+    </update>
+
+    <!--查询所有系统按钮作为参照-->
+    <select id="selectAllSmBtnAsRef" resultType="cn.hups.rbac.po.SmBtnPo">
+        SELECT
+        sb.pk_btn as pkBtn,
+        sb.btn_code as btnCode,
+        sb.btn_name as btnName
+        FROM
+        sm_btn sb
+        WHERE
+        sb.dr = 0
+    </select>
+
+    <!--根据菜单中绑定的按钮主键查询按钮信息-->
+    <select id="selectSmBtnByBindBtn" resultType="cn.hups.rbac.po.SmBtnPo">
+        SELECT
+        sb.pk_btn as pkBtn,
+        sb.btn_code as btnCode,
+        sb.btn_name as btnName
+        FROM
+        sm_btn sb
+        WHERE
+        sb.dr = 0
+        <if test="pkArr != null and pkArr.size > 0">
+            AND sb.pk_btn in
+            <foreach collection="pkArr" item="pk_btn" open="(" close=")" separator=",">
+                #{pk_btn}
+            </foreach>
+        </if>
+    </select>
+</mapper>

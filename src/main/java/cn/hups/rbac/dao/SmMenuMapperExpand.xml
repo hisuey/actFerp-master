@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.rbac.dao.SmMenuMapperExpand">
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(pk_menu)
+        FROM
+        sm_menu
+        WHERE
+        dr = 0
+        <if test="smMenuPo != null and smMenuPo.menuName != null and smMenuPo.menuName != ''">
+            and menu_name = #{smMenuPo.menuName}
+        </if>
+    </select>
+
+    <!--分页查询所有数据-->
+    <select id="selectAllSmMenuAsPage" resultType="cn.hups.rbac.po.SmMenuPo">
+        SELECT
+        sme.pk_menu as pkMenu,
+        sme.menu_code as menuCode,
+        sme.menu_name as menuName,
+        sme.icno,
+        sme.parent_id as parentId,
+        sme.url,
+        sme.sort,
+        sme.bind_btn as bindBtn,
+        sme.creator,
+        su.user_name as creatorShow,
+        sme.creationtime,
+        sme.dr,
+        sme.ts
+        FROM
+        sm_menu sme
+        LEFT JOIN sm_user su on sme.creator = su.userid and su.dr = 0
+        WHERE
+        sme.dr = 0
+        <if test="smMenuPo != null and smMenuPo.menuName != null and smMenuPo.menuName != ''">
+            and sme.menu_name = #{smMenuPo.menuName}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteSmMenuByPks" parameterType="java.util.List">
+        UPDATE sm_menu SET dr = 1
+        WHERE pk_menu in
+        <foreach collection="pkArr" item="pk_menu" open="(" close=")" separator=",">
+            #{pk_menu}
+        </foreach>
+    </update>
+
+    <!--查询所有菜单信息作为树结构、参照-->
+    <select id="selectAllSmMenuAsMenu" resultType="cn.hups.rbac.po.SmMenuPo">
+        SELECT
+        sme.pk_menu as pkMenu,
+        sme.menu_code as menuCode,
+        sme.menu_name as menuName,
+        sme.parent_id as parentId,
+        sme.bind_btn as bindBtn
+        FROM
+        sm_menu sme
+        WHERE
+        sme.dr = 0
+    </select>
+</mapper>

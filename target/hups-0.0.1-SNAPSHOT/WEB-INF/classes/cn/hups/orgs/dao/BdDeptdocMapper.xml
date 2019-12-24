@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.hups.orgs.dao.BdDeptdocMapper" >
+  <resultMap id="BaseResultMap" type="cn.hups.orgs.entity.BdDeptdoc" >
+    <constructor >
+      <idArg column="pk_deptdoc" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="deptname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="deptshortname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="deptcode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pk_corp" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pk_psndoc" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="canceled" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="canceldate" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="memo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="erpid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="erptype" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="def1" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="def2" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="def3" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="def4" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="def5" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="creator" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creationtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="dr" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ts" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pk_deptdoc, deptname, deptshortname, deptcode, pk_corp, pk_psndoc, canceled, canceldate, 
+    memo, erpid, erptype, def1, def2, def3, def4, def5, creator, creationtime, dr, ts
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.hups.orgs.entity.BdDeptdocExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bd_deptdoc
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bd_deptdoc
+    where pk_deptdoc = #{pkDeptdoc,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bd_deptdoc
+    where pk_deptdoc = #{pkDeptdoc,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.hups.orgs.entity.BdDeptdocExample" >
+    delete from bd_deptdoc
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.hups.orgs.entity.BdDeptdoc" >
+    insert into bd_deptdoc (pk_deptdoc, deptname, deptshortname, 
+      deptcode, pk_corp, pk_psndoc, 
+      canceled, canceldate, memo, 
+      erpid, erptype, def1, 
+      def2, def3, def4, def5, 
+      creator, creationtime, dr, 
+      ts)
+    values (#{pkDeptdoc,jdbcType=INTEGER}, #{deptname,jdbcType=VARCHAR}, #{deptshortname,jdbcType=VARCHAR}, 
+      #{deptcode,jdbcType=VARCHAR}, #{pkCorp,jdbcType=INTEGER}, #{pkPsndoc,jdbcType=INTEGER}, 
+      #{canceled,jdbcType=CHAR}, #{canceldate,jdbcType=CHAR}, #{memo,jdbcType=VARCHAR}, 
+      #{erpid,jdbcType=INTEGER}, #{erptype,jdbcType=VARCHAR}, #{def1,jdbcType=VARCHAR}, 
+      #{def2,jdbcType=VARCHAR}, #{def3,jdbcType=VARCHAR}, #{def4,jdbcType=VARCHAR}, #{def5,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=INTEGER}, #{creationtime,jdbcType=CHAR}, #{dr,jdbcType=INTEGER}, 
+      #{ts,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hups.orgs.entity.BdDeptdoc" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkDeptdoc">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bd_deptdoc
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pkDeptdoc != null" >
+        pk_deptdoc,
+      </if>
+      <if test="deptname != null" >
+        deptname,
+      </if>
+      <if test="deptshortname != null" >
+        deptshortname,
+      </if>
+      <if test="deptcode != null" >
+        deptcode,
+      </if>
+      <if test="pkCorp != null" >
+        pk_corp,
+      </if>
+      <if test="pkPsndoc != null" >
+        pk_psndoc,
+      </if>
+      <if test="canceled != null" >
+        canceled,
+      </if>
+      <if test="canceldate != null" >
+        canceldate,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="erpid != null" >
+        erpid,
+      </if>
+      <if test="erptype != null" >
+        erptype,
+      </if>
+      <if test="def1 != null" >
+        def1,
+      </if>
+      <if test="def2 != null" >
+        def2,
+      </if>
+      <if test="def3 != null" >
+        def3,
+      </if>
+      <if test="def4 != null" >
+        def4,
+      </if>
+      <if test="def5 != null" >
+        def5,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creationtime != null" >
+        creationtime,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pkDeptdoc != null" >
+        #{pkDeptdoc,jdbcType=INTEGER},
+      </if>
+      <if test="deptname != null" >
+        #{deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="deptshortname != null" >
+        #{deptshortname,jdbcType=VARCHAR},
+      </if>
+      <if test="deptcode != null" >
+        #{deptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="pkCorp != null" >
+        #{pkCorp,jdbcType=INTEGER},
+      </if>
+      <if test="pkPsndoc != null" >
+        #{pkPsndoc,jdbcType=INTEGER},
+      </if>
+      <if test="canceled != null" >
+        #{canceled,jdbcType=CHAR},
+      </if>
+      <if test="canceldate != null" >
+        #{canceldate,jdbcType=CHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="erpid != null" >
+        #{erpid,jdbcType=INTEGER},
+      </if>
+      <if test="erptype != null" >
+        #{erptype,jdbcType=VARCHAR},
+      </if>
+      <if test="def1 != null" >
+        #{def1,jdbcType=VARCHAR},
+      </if>
+      <if test="def2 != null" >
+        #{def2,jdbcType=VARCHAR},
+      </if>
+      <if test="def3 != null" >
+        #{def3,jdbcType=VARCHAR},
+      </if>
+      <if test="def4 != null" >
+        #{def4,jdbcType=VARCHAR},
+      </if>
+      <if test="def5 != null" >
+        #{def5,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.hups.orgs.entity.BdDeptdocExample" resultType="java.lang.Integer" >
+    select count(*) from bd_deptdoc
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bd_deptdoc
+    <set >
+      <if test="record.pkDeptdoc != null" >
+        pk_deptdoc = #{record.pkDeptdoc,jdbcType=INTEGER},
+      </if>
+      <if test="record.deptname != null" >
+        deptname = #{record.deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptshortname != null" >
+        deptshortname = #{record.deptshortname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptcode != null" >
+        deptcode = #{record.deptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkCorp != null" >
+        pk_corp = #{record.pkCorp,jdbcType=INTEGER},
+      </if>
+      <if test="record.pkPsndoc != null" >
+        pk_psndoc = #{record.pkPsndoc,jdbcType=INTEGER},
+      </if>
+      <if test="record.canceled != null" >
+        canceled = #{record.canceled,jdbcType=CHAR},
+      </if>
+      <if test="record.canceldate != null" >
+        canceldate = #{record.canceldate,jdbcType=CHAR},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.erpid != null" >
+        erpid = #{record.erpid,jdbcType=INTEGER},
+      </if>
+      <if test="record.erptype != null" >
+        erptype = #{record.erptype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.def1 != null" >
+        def1 = #{record.def1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.def2 != null" >
+        def2 = #{record.def2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.def3 != null" >
+        def3 = #{record.def3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.def4 != null" >
+        def4 = #{record.def4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.def5 != null" >
+        def5 = #{record.def5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationtime != null" >
+        creationtime = #{record.creationtime,jdbcType=CHAR},
+      </if>
+      <if test="record.dr != null" >
+        dr = #{record.dr,jdbcType=INTEGER},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bd_deptdoc
+    set pk_deptdoc = #{record.pkDeptdoc,jdbcType=INTEGER},
+      deptname = #{record.deptname,jdbcType=VARCHAR},
+      deptshortname = #{record.deptshortname,jdbcType=VARCHAR},
+      deptcode = #{record.deptcode,jdbcType=VARCHAR},
+      pk_corp = #{record.pkCorp,jdbcType=INTEGER},
+      pk_psndoc = #{record.pkPsndoc,jdbcType=INTEGER},
+      canceled = #{record.canceled,jdbcType=CHAR},
+      canceldate = #{record.canceldate,jdbcType=CHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      erpid = #{record.erpid,jdbcType=INTEGER},
+      erptype = #{record.erptype,jdbcType=VARCHAR},
+      def1 = #{record.def1,jdbcType=VARCHAR},
+      def2 = #{record.def2,jdbcType=VARCHAR},
+      def3 = #{record.def3,jdbcType=VARCHAR},
+      def4 = #{record.def4,jdbcType=VARCHAR},
+      def5 = #{record.def5,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=INTEGER},
+      creationtime = #{record.creationtime,jdbcType=CHAR},
+      dr = #{record.dr,jdbcType=INTEGER},
+      ts = #{record.ts,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hups.orgs.entity.BdDeptdoc" >
+    update bd_deptdoc
+    <set >
+      <if test="deptname != null" >
+        deptname = #{deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="deptshortname != null" >
+        deptshortname = #{deptshortname,jdbcType=VARCHAR},
+      </if>
+      <if test="deptcode != null" >
+        deptcode = #{deptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="pkCorp != null" >
+        pk_corp = #{pkCorp,jdbcType=INTEGER},
+      </if>
+      <if test="pkPsndoc != null" >
+        pk_psndoc = #{pkPsndoc,jdbcType=INTEGER},
+      </if>
+      <if test="canceled != null" >
+        canceled = #{canceled,jdbcType=CHAR},
+      </if>
+      <if test="canceldate != null" >
+        canceldate = #{canceldate,jdbcType=CHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="erpid != null" >
+        erpid = #{erpid,jdbcType=INTEGER},
+      </if>
+      <if test="erptype != null" >
+        erptype = #{erptype,jdbcType=VARCHAR},
+      </if>
+      <if test="def1 != null" >
+        def1 = #{def1,jdbcType=VARCHAR},
+      </if>
+      <if test="def2 != null" >
+        def2 = #{def2,jdbcType=VARCHAR},
+      </if>
+      <if test="def3 != null" >
+        def3 = #{def3,jdbcType=VARCHAR},
+      </if>
+      <if test="def4 != null" >
+        def4 = #{def4,jdbcType=VARCHAR},
+      </if>
+      <if test="def5 != null" >
+        def5 = #{def5,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        creationtime = #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=CHAR},
+      </if>
+    </set>
+    where pk_deptdoc = #{pkDeptdoc,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hups.orgs.entity.BdDeptdoc" >
+    update bd_deptdoc
+    set deptname = #{deptname,jdbcType=VARCHAR},
+      deptshortname = #{deptshortname,jdbcType=VARCHAR},
+      deptcode = #{deptcode,jdbcType=VARCHAR},
+      pk_corp = #{pkCorp,jdbcType=INTEGER},
+      pk_psndoc = #{pkPsndoc,jdbcType=INTEGER},
+      canceled = #{canceled,jdbcType=CHAR},
+      canceldate = #{canceldate,jdbcType=CHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      erpid = #{erpid,jdbcType=INTEGER},
+      erptype = #{erptype,jdbcType=VARCHAR},
+      def1 = #{def1,jdbcType=VARCHAR},
+      def2 = #{def2,jdbcType=VARCHAR},
+      def3 = #{def3,jdbcType=VARCHAR},
+      def4 = #{def4,jdbcType=VARCHAR},
+      def5 = #{def5,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      creationtime = #{creationtime,jdbcType=CHAR},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=CHAR}
+    where pk_deptdoc = #{pkDeptdoc,jdbcType=INTEGER}
+  </update>
+</mapper>

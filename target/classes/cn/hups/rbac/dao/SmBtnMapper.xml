@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.hups.rbac.dao.SmBtnMapper" >
+  <resultMap id="BaseResultMap" type="cn.hups.rbac.entity.SmBtn" >
+    <constructor >
+      <idArg column="pk_btn" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="btn_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="btn_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="creator" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creationtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="dr" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ts" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pk_btn, btn_code, btn_name, creator, creationtime, dr, ts
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.hups.rbac.entity.SmBtnExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sm_btn
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sm_btn
+    where pk_btn = #{pkBtn,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sm_btn
+    where pk_btn = #{pkBtn,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.hups.rbac.entity.SmBtnExample" >
+    delete from sm_btn
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.hups.rbac.entity.SmBtn" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkBtn">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sm_btn (pk_btn, btn_code, btn_name, 
+      creator, creationtime, dr, 
+      ts)
+    values (#{pkBtn,jdbcType=INTEGER}, #{btnCode,jdbcType=VARCHAR}, #{btnName,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=INTEGER}, #{creationtime,jdbcType=CHAR}, #{dr,jdbcType=INTEGER}, 
+      #{ts,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hups.rbac.entity.SmBtn" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkBtn">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sm_btn
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pkBtn != null" >
+        pk_btn,
+      </if>
+      <if test="btnCode != null" >
+        btn_code,
+      </if>
+      <if test="btnName != null" >
+        btn_name,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creationtime != null" >
+        creationtime,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pkBtn != null" >
+        #{pkBtn,jdbcType=INTEGER},
+      </if>
+      <if test="btnCode != null" >
+        #{btnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="btnName != null" >
+        #{btnName,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.hups.rbac.entity.SmBtnExample" resultType="java.lang.Integer" >
+    select count(*) from sm_btn
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sm_btn
+    <set >
+      <if test="record.pkBtn != null" >
+        pk_btn = #{record.pkBtn,jdbcType=INTEGER},
+      </if>
+      <if test="record.btnCode != null" >
+        btn_code = #{record.btnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.btnName != null" >
+        btn_name = #{record.btnName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationtime != null" >
+        creationtime = #{record.creationtime,jdbcType=CHAR},
+      </if>
+      <if test="record.dr != null" >
+        dr = #{record.dr,jdbcType=INTEGER},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sm_btn
+    set pk_btn = #{record.pkBtn,jdbcType=INTEGER},
+      btn_code = #{record.btnCode,jdbcType=VARCHAR},
+      btn_name = #{record.btnName,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=INTEGER},
+      creationtime = #{record.creationtime,jdbcType=CHAR},
+      dr = #{record.dr,jdbcType=INTEGER},
+      ts = #{record.ts,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hups.rbac.entity.SmBtn" >
+    update sm_btn
+    <set >
+      <if test="btnCode != null" >
+        btn_code = #{btnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="btnName != null" >
+        btn_name = #{btnName,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        creationtime = #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=CHAR},
+      </if>
+    </set>
+    where pk_btn = #{pkBtn,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hups.rbac.entity.SmBtn" >
+    update sm_btn
+    set btn_code = #{btnCode,jdbcType=VARCHAR},
+      btn_name = #{btnName,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      creationtime = #{creationtime,jdbcType=CHAR},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=CHAR}
+    where pk_btn = #{pkBtn,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.purchase.dao.BdMaterielDataBaseMapperExpand">
+    <!--查询表中数据数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT
+            count( pk_db_materiel )
+        FROM
+            bd_materiel_data_base
+        WHERE
+            dr = 0
+            <if test="bdMaterielDataBasePo != null and bdMaterielDataBasePo.materielCode != null and bdMaterielDataBasePo.materielCode != ''">
+                AND materiel_code like concat('%', #{bdMaterielDataBasePo.materielCode}, '%')
+            </if>
+            <if test="bdMaterielDataBasePo != null and bdMaterielDataBasePo.materialFullname != null and bdMaterielDataBasePo.materialFullname != ''">
+                AND material_fullname like concat('%', #{bdMaterielDataBasePo.materialFullname}, '%')
+            </if>
+            <if test="bdMaterielDataBasePo != null and bdMaterielDataBasePo.potting != null and bdMaterielDataBasePo.potting != ''">
+                AND potting like concat('%', #{bdMaterielDataBasePo.potting}, '%')
+            </if>
+    </select>
+
+    <!--分页查询数据-->
+    <select id="selectAllBdMaterielDataBaseAsPage" resultType="cn.hups.purchase.po.BdMaterielDataBasePo">
+        SELECT
+            bmdb.pk_db_materiel as pkDbMateriel,
+            bmdb.materiel_date as materielDate,
+            bmdb.materiel_code as materielCode,
+            bmdb.material_name as materialName,
+            bmdb.material_fullname as materialFullname,
+            bmdb.potting,
+            bmdb.norms,
+            bmdb.memo,
+            bmdb.brand,
+            bmdb.pk_supplier as pkSupplier,
+            bmdb.pk_agent as pkAgent,
+            bmdb.traffic_type as trafficType,
+            bmdb.purchase_type as purchaseType,
+            bmdb.inclutax,
+            bmdb.usage_unit as usageUnit,
+            bmdb.count_num as countNum,
+            bmdb.unit_price as unitPrice,
+            bmdb.amount_money as amountMoney,
+            bmdb.income_tax as incomeTax,
+            bmdb.tax_unit_price as taxUnitPrice,
+            bmdb.price_tax_total as priceTaxTotal,
+            bmdb.batch_num as batchNum,
+            bmdb.expire_date as expireDate,
+            bmdb.tax_rate as taxRate,
+            bmdb.creator,
+            suo.user_name as creatorShow,
+            bmdb.creationtime,
+            bmdb.ts,
+            bmdb.dr
+        FROM
+            bd_materiel_data_base bmdb
+            LEFT JOIN sm_user suo on bmdb.creator = suo.userid and suo.dr = 0
+        WHERE
+            bmdb.dr = 0
+            <if test="bdMaterielDataBasePo != null and bdMaterielDataBasePo.materielCode != null and bdMaterielDataBasePo.materielCode != ''">
+                AND bmdb.materiel_code like concat('%', #{bdMaterielDataBasePo.materielCode}, '%')
+            </if>
+            <if test="bdMaterielDataBasePo != null and bdMaterielDataBasePo.materialFullname != null and bdMaterielDataBasePo.materialFullname != ''">
+                AND bmdb.material_fullname like concat('%', #{bdMaterielDataBasePo.materialFullname}, '%')
+            </if>
+            <if test="bdMaterielDataBasePo != null and bdMaterielDataBasePo.potting != null and bdMaterielDataBasePo.potting != ''">
+                AND bmdb.potting like concat('%', #{bdMaterielDataBasePo.potting}, '%')
+            </if>
+    </select>
+    <!--根据主键集合删除物料数据库中的数据-->
+    <update id="deleteBdMaterielDataBaseByPks" parameterType="java.util.List">
+        UPDATE bd_materiel_data_base
+        SET dr = 0
+        WHERE pk_db_materiel in
+        <foreach collection="pkArr" item="pk_db_materiel" open="(" close=")" separator=",">
+            #{pk_db_materiel}
+        </foreach>
+    </update>
+</mapper>

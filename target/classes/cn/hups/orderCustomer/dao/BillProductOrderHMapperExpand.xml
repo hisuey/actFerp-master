@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.orderCustomer.dao.BillProductOrderHMapperExpand">
+
+    <resultMap id="billProductOrderHPoMap" type="cn.hups.orderCustomer.po.BillProductOrderHPo">
+        <id column="pkProductOrder" property="pkProductOrder" jdbcType="INTEGER"/>
+        <result column="pkCustomer" property="pkCustomer" jdbcType="INTEGER" />
+        <result column="pkPsndoc" property="pkPsndoc" jdbcType="INTEGER" />
+        <result column="pkTakeover" property="pkTakeover" jdbcType="INTEGER" />
+        <result column="materialSource" property="materialSource" jdbcType="CHAR" />
+        <result column="materialSourceShow" property="materialSourceShow" jdbcType="CHAR" />
+        <result column="taxinclud" property="taxinclud" jdbcType="CHAR" />
+        <result column="urgent" property="urgent" jdbcType="CHAR" />
+        <result column="urgentShow" property="urgentShow" jdbcType="CHAR" />
+        <result column="transportType" property="transportType" jdbcType="CHAR" />
+        <result column="transportTypeShow" property="transportTypeShow" jdbcType="CHAR" />
+        <result column="paymentType" property="paymentType" jdbcType="CHAR" />
+        <result column="paymentTypeShow" property="paymentTypeShow" jdbcType="CHAR" />
+        <result column="billState" property="billState" jdbcType="INTEGER" />
+        <result column="creator" property="creator" jdbcType="INTEGER" />
+        <result column="creatorShow" property="creatorShow" jdbcType="VARCHAR" />
+        <result column="creationtime" property="creationtime" jdbcType="VARCHAR" />
+        <result column="modifier" property="modifier" jdbcType="INTEGER" />
+        <result column="modifierShow" property="modifierShow" jdbcType="VARCHAR" />
+        <result column="modifiedtime" property="modifiedtime" jdbcType="VARCHAR" />
+        <result column="dr" property="dr" jdbcType="INTEGER" />
+        <result column="ts" property="ts" jdbcType="CHAR" />
+        <collection property="billProductOrderBPoList" ofType="cn.hups.orderCustomer.po.BillProductOrderBPo" select="selectOrderBodyByMaster" column="pkProductOrder"/>
+    </resultMap>
+
+    <!--查询表中数据数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT
+            count( bpoh.pk_product_order )
+        FROM
+            bill_product_order_h bpoh
+        WHERE
+            bpoh.dr = 0
+            <if test="billProductOrderHPo.billState != null">
+                AND bpoh.bill_state = #{billProductOrderHPo.billState}
+            </if>
+            <if test="billProductOrderHPo.taxinclud != null and billProductOrderHPo.taxinclud != ''">
+                AND bpoh.taxinclud = #{billProductOrderHPo.taxinclud}
+            </if>
+    </select>
+
+    <!--分页查询产品订单数据-->
+    <select id="selectAllProductOrderAsPage" resultMap="billProductOrderHPoMap">
+        SELECT
+            bpoh.pk_product_order as pkProductOrder,
+            bpoh.contract_no as contractNo,
+            bpoh.pk_customer as pkCustomer,
+            bcuone.name as customerName,
+            bcuone.tel as customerTel,
+            bcuone.corpaddress,
+            bpoh.pk_psndoc as pkPsndoc,
+            bpoh.pk_takeover as pkTakeover,
+            bpoh.material_source as materialSource,
+            bpoh.material_source as materialSourceShow,
+            bpoh.taxinclud,
+            bpoh.urgent,
+            bpoh.urgent as urgentShow,
+            bpoh.transport_type as transportType,
+            bpoh.transport_type as transportTypeShow,
+            bpoh.payment_type as paymentType,
+            bpoh.payment_type as paymentTypeShow,
+            bpoh.creator,
+            bcu.name as creatorShow,
+            bpoh.creationtime,
+            bpoh.modifier,
+            bcut.name as modifierShow,
+            bpoh.modifiedtime,
+            bpoh.dr,
+            bpoh.ts,
+            bpoh.bill_state as billState
+        FROM
+            bill_product_order_h bpoh
+            LEFT JOIN bd_customer bcuone ON bcuone.pk_customer = bpoh.pk_customer AND bcuone.dr = 0
+            LEFT JOIN bd_customer bcu ON bpoh.pk_customer = bcu.pk_customer AND bcu.dr = 0
+            LEFT JOIN bd_customer bcut ON bpoh.modifier = bcut.pk_customer AND bcut.dr = 0
+        WHERE
+            bpoh.dr = 0
+            <if test="billProductOrderHPo.billState != null">
+                AND bpoh.bill_state = #{billProductOrderHPo.billState}
+            </if>
+            <if test="billProductOrderHPo.taxinclud != null and billProductOrderHPo.taxinclud != ''">
+                AND bpoh.taxinclud = #{billProductOrderHPo.taxinclud}
+            </if>
+            <if test="billProductOrderHPo.pkProductOrder != null and billProductOrderHPo.pkProductOrder != ''">
+                AND bpoh.pk_product_order = #{billProductOrderHPo.pkProductOrder}
+            </if>
+    </select>
+
+    <!--查询产品订单表体数据-->
+    <select id="selectOrderBodyByMaster" resultType="cn.hups.orderCustomer.po.BillProductOrderBPo" parameterType="java.lang.Integer">
+        SELECT
+            pk_product_order_b as pkProductOrderB,
+            pk_product as pkProduct,
+            pk_product_order as pkProductOrder,
+            product_num as productNum,
+            memo,
+            creator,
+            creationtime,
+            dr,
+            ts
+        FROM
+            bill_product_order_b
+        WHERE
+            dr = 0
+            AND pk_product_order = #{pkProductOrder}
+    </select>
+
+    <!--根据销售负责人查询所有订单信息作为参照-->
+    <select id="selectAllSaleOrderByPkPsndocAsRef" resultType="cn.hups.orderCustomer.po.BillProductOrderHPo">
+        SELECT
+            bpoh.pk_product_order as pkProductOrder,
+            bpoh.contract_no as contractNo,
+            bpoh.pk_customer as pkCustomer,
+            bcuone.name as customerName,
+            bcuone.tel as customerTel,
+            bcuone.corpaddress,
+            bpoh.pk_psndoc as pkPsndoc,
+            bpoh.pk_takeover as pkTakeover,
+            bpoh.material_source as materialSource,
+            bpoh.material_source as materialSourceShow,
+            bpoh.taxinclud,
+            bpoh.urgent,
+            bpoh.urgent as urgentShow,
+            bpoh.transport_type as transportType,
+            bpoh.transport_type as transportTypeShow,
+            bpoh.payment_type as paymentType,
+            bpoh.payment_type as paymentTypeShow,
+            bpoh.creator,
+            bcu.name as creatorShow,
+            bpoh.creationtime,
+            bpoh.modifier,
+            bcut.name as modifierShow,
+            bpoh.modifiedtime,
+            bpoh.dr,
+            bpoh.ts,
+            bpoh.bill_state as billState
+        FROM
+            bill_product_order_h bpoh
+            LEFT JOIN bd_customer bcuone ON bcuone.pk_customer = bpoh.pk_customer AND bcuone.dr = 0
+            LEFT JOIN bd_customer bcu ON bpoh.pk_customer = bcu.pk_customer AND bcu.dr = 0
+            LEFT JOIN bd_customer bcut ON bpoh.modifier = bcut.pk_customer AND bcut.dr = 0
+        WHERE
+            bpoh.dr = 0 AND bpoh.bill_state = 30
+            <if test="billProductOrderHPo != null and billProductOrderHPo.pkPsndoc != null">
+                AND bpoh.pk_psndoc = #{billProductOrderHPo.pkPsndoc}
+            </if>
+    </select>
+
+    <!--根据产品主键查询订单中的产品数量-->
+    <select id="countSaleOrderProduct" resultType="java.lang.Long">
+        SELECT
+          count(bporderb.pk_product_order_b)
+        FROM
+          bill_product_order_b bporderb
+        LEFT JOIN bill_product_order_h bporderh on bporderh.pk_product_order = bporderb.pk_product_order
+        AND bporderb.dr = 0
+        LEFT JOIN bd_product bp on bporderb.pk_product = bp.pk_product and bp.dr = 0
+        LEFT JOIN bd_customer bcu ON bp.pk_customer = bcu.pk_customer
+        AND bcu.dr = 0
+        LEFT JOIN bd_customer bcuser ON bp.creator = bcuser.pk_customer
+        AND bcuser.dr = 0
+        LEFT JOIN bd_customer bcusert ON bp.modifier = bcusert.pk_customer
+        AND bcusert.dr = 0
+        LEFT JOIN sm_user sutre ON bp.approver = sutre.userid
+        AND sutre.dr = 0
+        LEFT JOIN bd_psndoc bpdoc ON bp.pk_psndoc = bpdoc.pk_psndoc
+        AND bpdoc.dr = 0
+        LEFT JOIN bd_customdoc bcusdocPur ON bp.purchase_contacts = bcusdocPur.pk_customdoc
+        AND bcusdocPur.dr = 0
+        LEFT JOIN bd_customdoc bcusdocSkill ON bp.skill_contacts = bcusdocSkill.pk_customdoc
+        AND bcusdocSkill.dr = 0
+        WHERE
+            bporderb.dr = 0 AND bporderh.bill_state = 30
+            <if test="billProductOrderHPo != null and billProductOrderHPo.pkProductOrder != null">
+                AND bporderb.pk_product_order = #{billProductOrderHPo.pkProductOrder}
+            </if>
+    </select>
+
+    <!--根据产品主键查询订单中的产品信息-->
+    <select id="selectAllSaleOrderProductAsPage" resultType="cn.hups.orderCustomer.po.BdOrderProductPo">
+        SELECT
+            bp.pk_product AS pkProduct,
+            bp.name,
+            bp.code,
+            bp.model,
+            bp.pk_psndoc AS pkPsndoc,
+            bpdoc.psnname AS pkPsndocShow,
+            bp.purchase_contacts AS purchaseContacts,
+            bcusdocPur.telnum AS purchaseContactsPhone,
+            bp.skill_contacts AS skillContacts,
+            bcusdocSkill.telnum AS skillContactsPhone,
+            bp.smt,
+            bp.dip,
+            bp.isinstal,
+            bp.instal_min AS instalMin,
+            bp.istest,
+            bp.test_min AS testMin,
+            bp.isaging,
+            bp.aging_min AS agingMin,
+            bp.exe_standard AS exeStandard,
+            bp.steel_mesh_source AS steelMeshSource,
+            bp.defense,
+            bp.defense_area AS defenseArea,
+            bp.seal_technics AS sealTechnics,
+            bp.material_source AS materialSource,
+            bp.ispcb,
+            bp.pcb_source AS pcbSource,
+            bp.pcb_long AS pcbLong,
+            bp.pcb_wide AS pcbWide,
+            bp.pcb_thick AS pcbThick,
+            bp.pcb_resist_color AS pcbResistColor,
+            bp.pcb_char_color AS pcbCharColor,
+            bp.pcb_resist_cover AS pcbResistCover,
+            bp.pcb_pad_spary AS pcbPadSpary,
+            bp.pcb_copper_thick AS pcbCopperThick,
+            bp.pk_customer AS pkCustomer,
+            bcu.name AS customerName,
+            bcu.code AS customerCode,
+            bp.order_number AS orderNumber,
+            bp.order_number AS orderNumber,
+            bp.bom_filename AS bomFilename,
+            bp.bom_filefullname AS bomFilefullname,
+            bp.pcb_filename AS pcbFilename,
+            bp.pcb_filefullname AS pcbFilefullname,
+            bp.craft_filename AS craftFilename,
+            bp.craft_filefullname AS craftFilefullname,
+            bp.ismake_tool AS ismakeTool,
+            bp.make_steel_mesh AS makeSteelMesh,
+            bp.make_dip AS makeDip,
+            bp.make_test AS makeTest,
+            bp.make_defense AS makeDefense,
+            bp.make_aging AS makeAging,
+            bp.task_id AS taskId,
+            bporderb.approver,
+            sutre.user_name AS approverShow,
+            bporderb.approvetime,
+            bporderb.bill_state AS billState,
+            bp.creator,
+            bcuser.name AS creatorOrderShow,
+            bp.creationtime,
+            bp.modifier,
+            bcusert.name AS modifierOrderShow,
+            bp.modifiedtime,
+            bp.dr,
+            bp.ts,
+            bp.special_technics AS specialTechnics,
+            bporderb.process_instance_id AS processInstanceId,
+            bp.technics_state AS technicsState,
+            bp.order_count AS orderCount,
+            bporderb.product_num as productNum,
+            bporderb.pk_product_order_b as pkProductOrderB
+        FROM
+            bill_product_order_b bporderb
+            LEFT JOIN bill_product_order_h bporderh on bporderh.pk_product_order = bporderb.pk_product_order
+            AND bporderb.dr = 0
+            LEFT JOIN bd_product bp on bporderb.pk_product = bp.pk_product and bp.dr = 0
+            LEFT JOIN bd_customer bcu ON bp.pk_customer = bcu.pk_customer
+            AND bcu.dr = 0
+            LEFT JOIN bd_customer bcuser ON bp.creator = bcuser.pk_customer
+            AND bcuser.dr = 0
+            LEFT JOIN bd_customer bcusert ON bp.modifier = bcusert.pk_customer
+            AND bcusert.dr = 0
+            LEFT JOIN sm_user sutre ON bporderb.approver = sutre.userid
+            AND sutre.dr = 0
+            LEFT JOIN bd_psndoc bpdoc ON bp.pk_psndoc = bpdoc.pk_psndoc
+            AND bpdoc.dr = 0
+            LEFT JOIN bd_customdoc bcusdocPur ON bp.purchase_contacts = bcusdocPur.pk_customdoc
+            AND bcusdocPur.dr = 0
+            LEFT JOIN bd_customdoc bcusdocSkill ON bp.skill_contacts = bcusdocSkill.pk_customdoc
+            AND bcusdocSkill.dr = 0
+        WHERE
+            bporderb.dr = 0 AND bporderh.bill_state = 30
+            <if test="billProductOrderHPo != null and billProductOrderHPo.pkProductOrder != null">
+                AND bporderb.pk_product_order = #{billProductOrderHPo.pkProductOrder}
+            </if>
+    </select>
+
+    <!--根据主键集合删除产品订单数据-->
+    <update id="deleteProductOrderHByPks" parameterType="java.util.List">
+        UPDATE bill_product_order_h SET dr = 1
+        WHERE pk_product_order in
+        <foreach collection="pkArr" item="pk_product_order" open="(" close=")" separator=",">
+            #{pk_product_order}
+        </foreach>
+    </update>
+    <update id="deleteProductOrderBodyByPks" parameterType="java.util.List">
+        UPDATE bill_product_order_b SET dr = 1
+        WHERE pk_product_order in
+        <foreach collection="pkArr" item="pk_product_order" open="(" close=")" separator=",">
+            #{pk_product_order}
+        </foreach>
+    </update>
+</mapper>

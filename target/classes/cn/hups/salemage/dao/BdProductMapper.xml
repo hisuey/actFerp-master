@@ -1,0 +1,1070 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.hups.salemage.dao.BdProductMapper" >
+  <resultMap id="BaseResultMap" type="cn.hups.salemage.entity.BdProduct" >
+    <constructor >
+      <idArg column="pk_product" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="model" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pk_psndoc" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="purchase_contacts" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="skill_contacts" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="smt" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="dip" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="isinstal" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="instal_min" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="istest" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="test_min" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="isaging" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="aging_min" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="exe_standard" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="steel_mesh_source" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="defense" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="defense_area" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="seal_technics" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="material_source" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="ispcb" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="pcb_source" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="pcb_long" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="pcb_wide" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="pcb_thick" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pcb_resist_color" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pcb_char_color" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pcb_resist_cover" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="pcb_pad_spary" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="pcb_copper_thick" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="pk_customer" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="bom_filename" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="bom_filefullname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pcb_filename" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pcb_filefullname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="craft_filename" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="craft_filefullname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ismake_tool" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="make_steel_mesh" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="make_dip" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="make_test" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="make_defense" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="make_aging" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="task_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="process_instance_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="approver" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="approvetime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="bill_state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creator" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creationtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="modifier" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="modifiedtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="dr" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ts" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="special_technics" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="technics_state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pk_product, name, code, model, pk_psndoc, purchase_contacts, skill_contacts, smt, 
+    dip, isinstal, instal_min, istest, test_min, isaging, aging_min, exe_standard, steel_mesh_source, 
+    defense, defense_area, seal_technics, material_source, ispcb, pcb_source, pcb_long, 
+    pcb_wide, pcb_thick, pcb_resist_color, pcb_char_color, pcb_resist_cover, pcb_pad_spary, 
+    pcb_copper_thick, pk_customer, order_number, bom_filename, bom_filefullname, pcb_filename, 
+    pcb_filefullname, craft_filename, craft_filefullname, ismake_tool, make_steel_mesh, 
+    make_dip, make_test, make_defense, make_aging, task_id, process_instance_id, approver, 
+    approvetime, bill_state, creator, creationtime, modifier, modifiedtime, dr, ts, special_technics, 
+    technics_state, order_count
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.hups.salemage.entity.BdProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bd_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bd_product
+    where pk_product = #{pkProduct,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bd_product
+    where pk_product = #{pkProduct,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.hups.salemage.entity.BdProductExample" >
+    delete from bd_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.hups.salemage.entity.BdProduct" >
+    insert into bd_product (pk_product, name, code, 
+      model, pk_psndoc, purchase_contacts, 
+      skill_contacts, smt, dip, 
+      isinstal, instal_min, istest, 
+      test_min, isaging, aging_min, 
+      exe_standard, steel_mesh_source, defense, 
+      defense_area, seal_technics, material_source, 
+      ispcb, pcb_source, pcb_long, 
+      pcb_wide, pcb_thick, pcb_resist_color, 
+      pcb_char_color, pcb_resist_cover, pcb_pad_spary, 
+      pcb_copper_thick, pk_customer, order_number, 
+      bom_filename, bom_filefullname, pcb_filename, 
+      pcb_filefullname, craft_filename, craft_filefullname, 
+      ismake_tool, make_steel_mesh, make_dip, 
+      make_test, make_defense, make_aging, 
+      task_id, process_instance_id, approver, 
+      approvetime, bill_state, creator, 
+      creationtime, modifier, modifiedtime, 
+      dr, ts, special_technics, 
+      technics_state, order_count)
+    values (#{pkProduct,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{model,jdbcType=VARCHAR}, #{pkPsndoc,jdbcType=INTEGER}, #{purchaseContacts,jdbcType=INTEGER}, 
+      #{skillContacts,jdbcType=INTEGER}, #{smt,jdbcType=INTEGER}, #{dip,jdbcType=INTEGER}, 
+      #{isinstal,jdbcType=CHAR}, #{instalMin,jdbcType=INTEGER}, #{istest,jdbcType=CHAR}, 
+      #{testMin,jdbcType=INTEGER}, #{isaging,jdbcType=CHAR}, #{agingMin,jdbcType=INTEGER}, 
+      #{exeStandard,jdbcType=CHAR}, #{steelMeshSource,jdbcType=CHAR}, #{defense,jdbcType=CHAR}, 
+      #{defenseArea,jdbcType=DECIMAL}, #{sealTechnics,jdbcType=CHAR}, #{materialSource,jdbcType=CHAR}, 
+      #{ispcb,jdbcType=CHAR}, #{pcbSource,jdbcType=CHAR}, #{pcbLong,jdbcType=DOUBLE}, 
+      #{pcbWide,jdbcType=DOUBLE}, #{pcbThick,jdbcType=INTEGER}, #{pcbResistColor,jdbcType=VARCHAR}, 
+      #{pcbCharColor,jdbcType=VARCHAR}, #{pcbResistCover,jdbcType=CHAR}, #{pcbPadSpary,jdbcType=CHAR}, 
+      #{pcbCopperThick,jdbcType=CHAR}, #{pkCustomer,jdbcType=INTEGER}, #{orderNumber,jdbcType=INTEGER}, 
+      #{bomFilename,jdbcType=VARCHAR}, #{bomFilefullname,jdbcType=VARCHAR}, #{pcbFilename,jdbcType=VARCHAR}, 
+      #{pcbFilefullname,jdbcType=VARCHAR}, #{craftFilename,jdbcType=VARCHAR}, #{craftFilefullname,jdbcType=VARCHAR}, 
+      #{ismakeTool,jdbcType=CHAR}, #{makeSteelMesh,jdbcType=CHAR}, #{makeDip,jdbcType=CHAR}, 
+      #{makeTest,jdbcType=CHAR}, #{makeDefense,jdbcType=CHAR}, #{makeAging,jdbcType=CHAR}, 
+      #{taskId,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR}, #{approver,jdbcType=INTEGER}, 
+      #{approvetime,jdbcType=CHAR}, #{billState,jdbcType=INTEGER}, #{creator,jdbcType=INTEGER}, 
+      #{creationtime,jdbcType=CHAR}, #{modifier,jdbcType=INTEGER}, #{modifiedtime,jdbcType=CHAR}, 
+      #{dr,jdbcType=INTEGER}, #{ts,jdbcType=CHAR}, #{specialTechnics,jdbcType=CHAR}, 
+      #{technicsState,jdbcType=INTEGER}, #{orderCount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hups.salemage.entity.BdProduct" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkProduct">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bd_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pkProduct != null" >
+        pk_product,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="model != null" >
+        model,
+      </if>
+      <if test="pkPsndoc != null" >
+        pk_psndoc,
+      </if>
+      <if test="purchaseContacts != null" >
+        purchase_contacts,
+      </if>
+      <if test="skillContacts != null" >
+        skill_contacts,
+      </if>
+      <if test="smt != null" >
+        smt,
+      </if>
+      <if test="dip != null" >
+        dip,
+      </if>
+      <if test="isinstal != null" >
+        isinstal,
+      </if>
+      <if test="instalMin != null" >
+        instal_min,
+      </if>
+      <if test="istest != null" >
+        istest,
+      </if>
+      <if test="testMin != null" >
+        test_min,
+      </if>
+      <if test="isaging != null" >
+        isaging,
+      </if>
+      <if test="agingMin != null" >
+        aging_min,
+      </if>
+      <if test="exeStandard != null" >
+        exe_standard,
+      </if>
+      <if test="steelMeshSource != null" >
+        steel_mesh_source,
+      </if>
+      <if test="defense != null" >
+        defense,
+      </if>
+      <if test="defenseArea != null" >
+        defense_area,
+      </if>
+      <if test="sealTechnics != null" >
+        seal_technics,
+      </if>
+      <if test="materialSource != null" >
+        material_source,
+      </if>
+      <if test="ispcb != null" >
+        ispcb,
+      </if>
+      <if test="pcbSource != null" >
+        pcb_source,
+      </if>
+      <if test="pcbLong != null" >
+        pcb_long,
+      </if>
+      <if test="pcbWide != null" >
+        pcb_wide,
+      </if>
+      <if test="pcbThick != null" >
+        pcb_thick,
+      </if>
+      <if test="pcbResistColor != null" >
+        pcb_resist_color,
+      </if>
+      <if test="pcbCharColor != null" >
+        pcb_char_color,
+      </if>
+      <if test="pcbResistCover != null" >
+        pcb_resist_cover,
+      </if>
+      <if test="pcbPadSpary != null" >
+        pcb_pad_spary,
+      </if>
+      <if test="pcbCopperThick != null" >
+        pcb_copper_thick,
+      </if>
+      <if test="pkCustomer != null" >
+        pk_customer,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="bomFilename != null" >
+        bom_filename,
+      </if>
+      <if test="bomFilefullname != null" >
+        bom_filefullname,
+      </if>
+      <if test="pcbFilename != null" >
+        pcb_filename,
+      </if>
+      <if test="pcbFilefullname != null" >
+        pcb_filefullname,
+      </if>
+      <if test="craftFilename != null" >
+        craft_filename,
+      </if>
+      <if test="craftFilefullname != null" >
+        craft_filefullname,
+      </if>
+      <if test="ismakeTool != null" >
+        ismake_tool,
+      </if>
+      <if test="makeSteelMesh != null" >
+        make_steel_mesh,
+      </if>
+      <if test="makeDip != null" >
+        make_dip,
+      </if>
+      <if test="makeTest != null" >
+        make_test,
+      </if>
+      <if test="makeDefense != null" >
+        make_defense,
+      </if>
+      <if test="makeAging != null" >
+        make_aging,
+      </if>
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="processInstanceId != null" >
+        process_instance_id,
+      </if>
+      <if test="approver != null" >
+        approver,
+      </if>
+      <if test="approvetime != null" >
+        approvetime,
+      </if>
+      <if test="billState != null" >
+        bill_state,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creationtime != null" >
+        creationtime,
+      </if>
+      <if test="modifier != null" >
+        modifier,
+      </if>
+      <if test="modifiedtime != null" >
+        modifiedtime,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+      <if test="specialTechnics != null" >
+        special_technics,
+      </if>
+      <if test="technicsState != null" >
+        technics_state,
+      </if>
+      <if test="orderCount != null" >
+        order_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pkProduct != null" >
+        #{pkProduct,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="pkPsndoc != null" >
+        #{pkPsndoc,jdbcType=INTEGER},
+      </if>
+      <if test="purchaseContacts != null" >
+        #{purchaseContacts,jdbcType=INTEGER},
+      </if>
+      <if test="skillContacts != null" >
+        #{skillContacts,jdbcType=INTEGER},
+      </if>
+      <if test="smt != null" >
+        #{smt,jdbcType=INTEGER},
+      </if>
+      <if test="dip != null" >
+        #{dip,jdbcType=INTEGER},
+      </if>
+      <if test="isinstal != null" >
+        #{isinstal,jdbcType=CHAR},
+      </if>
+      <if test="instalMin != null" >
+        #{instalMin,jdbcType=INTEGER},
+      </if>
+      <if test="istest != null" >
+        #{istest,jdbcType=CHAR},
+      </if>
+      <if test="testMin != null" >
+        #{testMin,jdbcType=INTEGER},
+      </if>
+      <if test="isaging != null" >
+        #{isaging,jdbcType=CHAR},
+      </if>
+      <if test="agingMin != null" >
+        #{agingMin,jdbcType=INTEGER},
+      </if>
+      <if test="exeStandard != null" >
+        #{exeStandard,jdbcType=CHAR},
+      </if>
+      <if test="steelMeshSource != null" >
+        #{steelMeshSource,jdbcType=CHAR},
+      </if>
+      <if test="defense != null" >
+        #{defense,jdbcType=CHAR},
+      </if>
+      <if test="defenseArea != null" >
+        #{defenseArea,jdbcType=DECIMAL},
+      </if>
+      <if test="sealTechnics != null" >
+        #{sealTechnics,jdbcType=CHAR},
+      </if>
+      <if test="materialSource != null" >
+        #{materialSource,jdbcType=CHAR},
+      </if>
+      <if test="ispcb != null" >
+        #{ispcb,jdbcType=CHAR},
+      </if>
+      <if test="pcbSource != null" >
+        #{pcbSource,jdbcType=CHAR},
+      </if>
+      <if test="pcbLong != null" >
+        #{pcbLong,jdbcType=DOUBLE},
+      </if>
+      <if test="pcbWide != null" >
+        #{pcbWide,jdbcType=DOUBLE},
+      </if>
+      <if test="pcbThick != null" >
+        #{pcbThick,jdbcType=INTEGER},
+      </if>
+      <if test="pcbResistColor != null" >
+        #{pcbResistColor,jdbcType=VARCHAR},
+      </if>
+      <if test="pcbCharColor != null" >
+        #{pcbCharColor,jdbcType=VARCHAR},
+      </if>
+      <if test="pcbResistCover != null" >
+        #{pcbResistCover,jdbcType=CHAR},
+      </if>
+      <if test="pcbPadSpary != null" >
+        #{pcbPadSpary,jdbcType=CHAR},
+      </if>
+      <if test="pcbCopperThick != null" >
+        #{pcbCopperThick,jdbcType=CHAR},
+      </if>
+      <if test="pkCustomer != null" >
+        #{pkCustomer,jdbcType=INTEGER},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=INTEGER},
+      </if>
+      <if test="bomFilename != null" >
+        #{bomFilename,jdbcType=VARCHAR},
+      </if>
+      <if test="bomFilefullname != null" >
+        #{bomFilefullname,jdbcType=VARCHAR},
+      </if>
+      <if test="pcbFilename != null" >
+        #{pcbFilename,jdbcType=VARCHAR},
+      </if>
+      <if test="pcbFilefullname != null" >
+        #{pcbFilefullname,jdbcType=VARCHAR},
+      </if>
+      <if test="craftFilename != null" >
+        #{craftFilename,jdbcType=VARCHAR},
+      </if>
+      <if test="craftFilefullname != null" >
+        #{craftFilefullname,jdbcType=VARCHAR},
+      </if>
+      <if test="ismakeTool != null" >
+        #{ismakeTool,jdbcType=CHAR},
+      </if>
+      <if test="makeSteelMesh != null" >
+        #{makeSteelMesh,jdbcType=CHAR},
+      </if>
+      <if test="makeDip != null" >
+        #{makeDip,jdbcType=CHAR},
+      </if>
+      <if test="makeTest != null" >
+        #{makeTest,jdbcType=CHAR},
+      </if>
+      <if test="makeDefense != null" >
+        #{makeDefense,jdbcType=CHAR},
+      </if>
+      <if test="makeAging != null" >
+        #{makeAging,jdbcType=CHAR},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="processInstanceId != null" >
+        #{processInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        #{approver,jdbcType=INTEGER},
+      </if>
+      <if test="approvetime != null" >
+        #{approvetime,jdbcType=CHAR},
+      </if>
+      <if test="billState != null" >
+        #{billState,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=INTEGER},
+      </if>
+      <if test="modifiedtime != null" >
+        #{modifiedtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=CHAR},
+      </if>
+      <if test="specialTechnics != null" >
+        #{specialTechnics,jdbcType=CHAR},
+      </if>
+      <if test="technicsState != null" >
+        #{technicsState,jdbcType=INTEGER},
+      </if>
+      <if test="orderCount != null" >
+        #{orderCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.hups.salemage.entity.BdProductExample" resultType="java.lang.Integer" >
+    select count(*) from bd_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bd_product
+    <set >
+      <if test="record.pkProduct != null" >
+        pk_product = #{record.pkProduct,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null" >
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.model != null" >
+        model = #{record.model,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pkPsndoc != null" >
+        pk_psndoc = #{record.pkPsndoc,jdbcType=INTEGER},
+      </if>
+      <if test="record.purchaseContacts != null" >
+        purchase_contacts = #{record.purchaseContacts,jdbcType=INTEGER},
+      </if>
+      <if test="record.skillContacts != null" >
+        skill_contacts = #{record.skillContacts,jdbcType=INTEGER},
+      </if>
+      <if test="record.smt != null" >
+        smt = #{record.smt,jdbcType=INTEGER},
+      </if>
+      <if test="record.dip != null" >
+        dip = #{record.dip,jdbcType=INTEGER},
+      </if>
+      <if test="record.isinstal != null" >
+        isinstal = #{record.isinstal,jdbcType=CHAR},
+      </if>
+      <if test="record.instalMin != null" >
+        instal_min = #{record.instalMin,jdbcType=INTEGER},
+      </if>
+      <if test="record.istest != null" >
+        istest = #{record.istest,jdbcType=CHAR},
+      </if>
+      <if test="record.testMin != null" >
+        test_min = #{record.testMin,jdbcType=INTEGER},
+      </if>
+      <if test="record.isaging != null" >
+        isaging = #{record.isaging,jdbcType=CHAR},
+      </if>
+      <if test="record.agingMin != null" >
+        aging_min = #{record.agingMin,jdbcType=INTEGER},
+      </if>
+      <if test="record.exeStandard != null" >
+        exe_standard = #{record.exeStandard,jdbcType=CHAR},
+      </if>
+      <if test="record.steelMeshSource != null" >
+        steel_mesh_source = #{record.steelMeshSource,jdbcType=CHAR},
+      </if>
+      <if test="record.defense != null" >
+        defense = #{record.defense,jdbcType=CHAR},
+      </if>
+      <if test="record.defenseArea != null" >
+        defense_area = #{record.defenseArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sealTechnics != null" >
+        seal_technics = #{record.sealTechnics,jdbcType=CHAR},
+      </if>
+      <if test="record.materialSource != null" >
+        material_source = #{record.materialSource,jdbcType=CHAR},
+      </if>
+      <if test="record.ispcb != null" >
+        ispcb = #{record.ispcb,jdbcType=CHAR},
+      </if>
+      <if test="record.pcbSource != null" >
+        pcb_source = #{record.pcbSource,jdbcType=CHAR},
+      </if>
+      <if test="record.pcbLong != null" >
+        pcb_long = #{record.pcbLong,jdbcType=DOUBLE},
+      </if>
+      <if test="record.pcbWide != null" >
+        pcb_wide = #{record.pcbWide,jdbcType=DOUBLE},
+      </if>
+      <if test="record.pcbThick != null" >
+        pcb_thick = #{record.pcbThick,jdbcType=INTEGER},
+      </if>
+      <if test="record.pcbResistColor != null" >
+        pcb_resist_color = #{record.pcbResistColor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pcbCharColor != null" >
+        pcb_char_color = #{record.pcbCharColor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pcbResistCover != null" >
+        pcb_resist_cover = #{record.pcbResistCover,jdbcType=CHAR},
+      </if>
+      <if test="record.pcbPadSpary != null" >
+        pcb_pad_spary = #{record.pcbPadSpary,jdbcType=CHAR},
+      </if>
+      <if test="record.pcbCopperThick != null" >
+        pcb_copper_thick = #{record.pcbCopperThick,jdbcType=CHAR},
+      </if>
+      <if test="record.pkCustomer != null" >
+        pk_customer = #{record.pkCustomer,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderNumber != null" >
+        order_number = #{record.orderNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.bomFilename != null" >
+        bom_filename = #{record.bomFilename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bomFilefullname != null" >
+        bom_filefullname = #{record.bomFilefullname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pcbFilename != null" >
+        pcb_filename = #{record.pcbFilename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pcbFilefullname != null" >
+        pcb_filefullname = #{record.pcbFilefullname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.craftFilename != null" >
+        craft_filename = #{record.craftFilename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.craftFilefullname != null" >
+        craft_filefullname = #{record.craftFilefullname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ismakeTool != null" >
+        ismake_tool = #{record.ismakeTool,jdbcType=CHAR},
+      </if>
+      <if test="record.makeSteelMesh != null" >
+        make_steel_mesh = #{record.makeSteelMesh,jdbcType=CHAR},
+      </if>
+      <if test="record.makeDip != null" >
+        make_dip = #{record.makeDip,jdbcType=CHAR},
+      </if>
+      <if test="record.makeTest != null" >
+        make_test = #{record.makeTest,jdbcType=CHAR},
+      </if>
+      <if test="record.makeDefense != null" >
+        make_defense = #{record.makeDefense,jdbcType=CHAR},
+      </if>
+      <if test="record.makeAging != null" >
+        make_aging = #{record.makeAging,jdbcType=CHAR},
+      </if>
+      <if test="record.taskId != null" >
+        task_id = #{record.taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processInstanceId != null" >
+        process_instance_id = #{record.processInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approver != null" >
+        approver = #{record.approver,jdbcType=INTEGER},
+      </if>
+      <if test="record.approvetime != null" >
+        approvetime = #{record.approvetime,jdbcType=CHAR},
+      </if>
+      <if test="record.billState != null" >
+        bill_state = #{record.billState,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationtime != null" >
+        creationtime = #{record.creationtime,jdbcType=CHAR},
+      </if>
+      <if test="record.modifier != null" >
+        modifier = #{record.modifier,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifiedtime != null" >
+        modifiedtime = #{record.modifiedtime,jdbcType=CHAR},
+      </if>
+      <if test="record.dr != null" >
+        dr = #{record.dr,jdbcType=INTEGER},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=CHAR},
+      </if>
+      <if test="record.specialTechnics != null" >
+        special_technics = #{record.specialTechnics,jdbcType=CHAR},
+      </if>
+      <if test="record.technicsState != null" >
+        technics_state = #{record.technicsState,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderCount != null" >
+        order_count = #{record.orderCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bd_product
+    set pk_product = #{record.pkProduct,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      model = #{record.model,jdbcType=VARCHAR},
+      pk_psndoc = #{record.pkPsndoc,jdbcType=INTEGER},
+      purchase_contacts = #{record.purchaseContacts,jdbcType=INTEGER},
+      skill_contacts = #{record.skillContacts,jdbcType=INTEGER},
+      smt = #{record.smt,jdbcType=INTEGER},
+      dip = #{record.dip,jdbcType=INTEGER},
+      isinstal = #{record.isinstal,jdbcType=CHAR},
+      instal_min = #{record.instalMin,jdbcType=INTEGER},
+      istest = #{record.istest,jdbcType=CHAR},
+      test_min = #{record.testMin,jdbcType=INTEGER},
+      isaging = #{record.isaging,jdbcType=CHAR},
+      aging_min = #{record.agingMin,jdbcType=INTEGER},
+      exe_standard = #{record.exeStandard,jdbcType=CHAR},
+      steel_mesh_source = #{record.steelMeshSource,jdbcType=CHAR},
+      defense = #{record.defense,jdbcType=CHAR},
+      defense_area = #{record.defenseArea,jdbcType=DECIMAL},
+      seal_technics = #{record.sealTechnics,jdbcType=CHAR},
+      material_source = #{record.materialSource,jdbcType=CHAR},
+      ispcb = #{record.ispcb,jdbcType=CHAR},
+      pcb_source = #{record.pcbSource,jdbcType=CHAR},
+      pcb_long = #{record.pcbLong,jdbcType=DOUBLE},
+      pcb_wide = #{record.pcbWide,jdbcType=DOUBLE},
+      pcb_thick = #{record.pcbThick,jdbcType=INTEGER},
+      pcb_resist_color = #{record.pcbResistColor,jdbcType=VARCHAR},
+      pcb_char_color = #{record.pcbCharColor,jdbcType=VARCHAR},
+      pcb_resist_cover = #{record.pcbResistCover,jdbcType=CHAR},
+      pcb_pad_spary = #{record.pcbPadSpary,jdbcType=CHAR},
+      pcb_copper_thick = #{record.pcbCopperThick,jdbcType=CHAR},
+      pk_customer = #{record.pkCustomer,jdbcType=INTEGER},
+      order_number = #{record.orderNumber,jdbcType=INTEGER},
+      bom_filename = #{record.bomFilename,jdbcType=VARCHAR},
+      bom_filefullname = #{record.bomFilefullname,jdbcType=VARCHAR},
+      pcb_filename = #{record.pcbFilename,jdbcType=VARCHAR},
+      pcb_filefullname = #{record.pcbFilefullname,jdbcType=VARCHAR},
+      craft_filename = #{record.craftFilename,jdbcType=VARCHAR},
+      craft_filefullname = #{record.craftFilefullname,jdbcType=VARCHAR},
+      ismake_tool = #{record.ismakeTool,jdbcType=CHAR},
+      make_steel_mesh = #{record.makeSteelMesh,jdbcType=CHAR},
+      make_dip = #{record.makeDip,jdbcType=CHAR},
+      make_test = #{record.makeTest,jdbcType=CHAR},
+      make_defense = #{record.makeDefense,jdbcType=CHAR},
+      make_aging = #{record.makeAging,jdbcType=CHAR},
+      task_id = #{record.taskId,jdbcType=VARCHAR},
+      process_instance_id = #{record.processInstanceId,jdbcType=VARCHAR},
+      approver = #{record.approver,jdbcType=INTEGER},
+      approvetime = #{record.approvetime,jdbcType=CHAR},
+      bill_state = #{record.billState,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=INTEGER},
+      creationtime = #{record.creationtime,jdbcType=CHAR},
+      modifier = #{record.modifier,jdbcType=INTEGER},
+      modifiedtime = #{record.modifiedtime,jdbcType=CHAR},
+      dr = #{record.dr,jdbcType=INTEGER},
+      ts = #{record.ts,jdbcType=CHAR},
+      special_technics = #{record.specialTechnics,jdbcType=CHAR},
+      technics_state = #{record.technicsState,jdbcType=INTEGER},
+      order_count = #{record.orderCount,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hups.salemage.entity.BdProduct" >
+    update bd_product
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="pkPsndoc != null" >
+        pk_psndoc = #{pkPsndoc,jdbcType=INTEGER},
+      </if>
+      <if test="purchaseContacts != null" >
+        purchase_contacts = #{purchaseContacts,jdbcType=INTEGER},
+      </if>
+      <if test="skillContacts != null" >
+        skill_contacts = #{skillContacts,jdbcType=INTEGER},
+      </if>
+      <if test="smt != null" >
+        smt = #{smt,jdbcType=INTEGER},
+      </if>
+      <if test="dip != null" >
+        dip = #{dip,jdbcType=INTEGER},
+      </if>
+      <if test="isinstal != null" >
+        isinstal = #{isinstal,jdbcType=CHAR},
+      </if>
+      <if test="instalMin != null" >
+        instal_min = #{instalMin,jdbcType=INTEGER},
+      </if>
+      <if test="istest != null" >
+        istest = #{istest,jdbcType=CHAR},
+      </if>
+      <if test="testMin != null" >
+        test_min = #{testMin,jdbcType=INTEGER},
+      </if>
+      <if test="isaging != null" >
+        isaging = #{isaging,jdbcType=CHAR},
+      </if>
+      <if test="agingMin != null" >
+        aging_min = #{agingMin,jdbcType=INTEGER},
+      </if>
+      <if test="exeStandard != null" >
+        exe_standard = #{exeStandard,jdbcType=CHAR},
+      </if>
+      <if test="steelMeshSource != null" >
+        steel_mesh_source = #{steelMeshSource,jdbcType=CHAR},
+      </if>
+      <if test="defense != null" >
+        defense = #{defense,jdbcType=CHAR},
+      </if>
+      <if test="defenseArea != null" >
+        defense_area = #{defenseArea,jdbcType=DECIMAL},
+      </if>
+      <if test="sealTechnics != null" >
+        seal_technics = #{sealTechnics,jdbcType=CHAR},
+      </if>
+      <if test="materialSource != null" >
+        material_source = #{materialSource,jdbcType=CHAR},
+      </if>
+      <if test="ispcb != null" >
+        ispcb = #{ispcb,jdbcType=CHAR},
+      </if>
+      <if test="pcbSource != null" >
+        pcb_source = #{pcbSource,jdbcType=CHAR},
+      </if>
+      <if test="pcbLong != null" >
+        pcb_long = #{pcbLong,jdbcType=DOUBLE},
+      </if>
+      <if test="pcbWide != null" >
+        pcb_wide = #{pcbWide,jdbcType=DOUBLE},
+      </if>
+      <if test="pcbThick != null" >
+        pcb_thick = #{pcbThick,jdbcType=INTEGER},
+      </if>
+      <if test="pcbResistColor != null" >
+        pcb_resist_color = #{pcbResistColor,jdbcType=VARCHAR},
+      </if>
+      <if test="pcbCharColor != null" >
+        pcb_char_color = #{pcbCharColor,jdbcType=VARCHAR},
+      </if>
+      <if test="pcbResistCover != null" >
+        pcb_resist_cover = #{pcbResistCover,jdbcType=CHAR},
+      </if>
+      <if test="pcbPadSpary != null" >
+        pcb_pad_spary = #{pcbPadSpary,jdbcType=CHAR},
+      </if>
+      <if test="pcbCopperThick != null" >
+        pcb_copper_thick = #{pcbCopperThick,jdbcType=CHAR},
+      </if>
+      <if test="pkCustomer != null" >
+        pk_customer = #{pkCustomer,jdbcType=INTEGER},
+      </if>
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=INTEGER},
+      </if>
+      <if test="bomFilename != null" >
+        bom_filename = #{bomFilename,jdbcType=VARCHAR},
+      </if>
+      <if test="bomFilefullname != null" >
+        bom_filefullname = #{bomFilefullname,jdbcType=VARCHAR},
+      </if>
+      <if test="pcbFilename != null" >
+        pcb_filename = #{pcbFilename,jdbcType=VARCHAR},
+      </if>
+      <if test="pcbFilefullname != null" >
+        pcb_filefullname = #{pcbFilefullname,jdbcType=VARCHAR},
+      </if>
+      <if test="craftFilename != null" >
+        craft_filename = #{craftFilename,jdbcType=VARCHAR},
+      </if>
+      <if test="craftFilefullname != null" >
+        craft_filefullname = #{craftFilefullname,jdbcType=VARCHAR},
+      </if>
+      <if test="ismakeTool != null" >
+        ismake_tool = #{ismakeTool,jdbcType=CHAR},
+      </if>
+      <if test="makeSteelMesh != null" >
+        make_steel_mesh = #{makeSteelMesh,jdbcType=CHAR},
+      </if>
+      <if test="makeDip != null" >
+        make_dip = #{makeDip,jdbcType=CHAR},
+      </if>
+      <if test="makeTest != null" >
+        make_test = #{makeTest,jdbcType=CHAR},
+      </if>
+      <if test="makeDefense != null" >
+        make_defense = #{makeDefense,jdbcType=CHAR},
+      </if>
+      <if test="makeAging != null" >
+        make_aging = #{makeAging,jdbcType=CHAR},
+      </if>
+      <if test="taskId != null" >
+        task_id = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="processInstanceId != null" >
+        process_instance_id = #{processInstanceId,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        approver = #{approver,jdbcType=INTEGER},
+      </if>
+      <if test="approvetime != null" >
+        approvetime = #{approvetime,jdbcType=CHAR},
+      </if>
+      <if test="billState != null" >
+        bill_state = #{billState,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        creationtime = #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="modifier != null" >
+        modifier = #{modifier,jdbcType=INTEGER},
+      </if>
+      <if test="modifiedtime != null" >
+        modifiedtime = #{modifiedtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=CHAR},
+      </if>
+      <if test="specialTechnics != null" >
+        special_technics = #{specialTechnics,jdbcType=CHAR},
+      </if>
+      <if test="technicsState != null" >
+        technics_state = #{technicsState,jdbcType=INTEGER},
+      </if>
+      <if test="orderCount != null" >
+        order_count = #{orderCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where pk_product = #{pkProduct,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hups.salemage.entity.BdProduct" >
+    update bd_product
+    set name = #{name,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      pk_psndoc = #{pkPsndoc,jdbcType=INTEGER},
+      purchase_contacts = #{purchaseContacts,jdbcType=INTEGER},
+      skill_contacts = #{skillContacts,jdbcType=INTEGER},
+      smt = #{smt,jdbcType=INTEGER},
+      dip = #{dip,jdbcType=INTEGER},
+      isinstal = #{isinstal,jdbcType=CHAR},
+      instal_min = #{instalMin,jdbcType=INTEGER},
+      istest = #{istest,jdbcType=CHAR},
+      test_min = #{testMin,jdbcType=INTEGER},
+      isaging = #{isaging,jdbcType=CHAR},
+      aging_min = #{agingMin,jdbcType=INTEGER},
+      exe_standard = #{exeStandard,jdbcType=CHAR},
+      steel_mesh_source = #{steelMeshSource,jdbcType=CHAR},
+      defense = #{defense,jdbcType=CHAR},
+      defense_area = #{defenseArea,jdbcType=DECIMAL},
+      seal_technics = #{sealTechnics,jdbcType=CHAR},
+      material_source = #{materialSource,jdbcType=CHAR},
+      ispcb = #{ispcb,jdbcType=CHAR},
+      pcb_source = #{pcbSource,jdbcType=CHAR},
+      pcb_long = #{pcbLong,jdbcType=DOUBLE},
+      pcb_wide = #{pcbWide,jdbcType=DOUBLE},
+      pcb_thick = #{pcbThick,jdbcType=INTEGER},
+      pcb_resist_color = #{pcbResistColor,jdbcType=VARCHAR},
+      pcb_char_color = #{pcbCharColor,jdbcType=VARCHAR},
+      pcb_resist_cover = #{pcbResistCover,jdbcType=CHAR},
+      pcb_pad_spary = #{pcbPadSpary,jdbcType=CHAR},
+      pcb_copper_thick = #{pcbCopperThick,jdbcType=CHAR},
+      pk_customer = #{pkCustomer,jdbcType=INTEGER},
+      order_number = #{orderNumber,jdbcType=INTEGER},
+      bom_filename = #{bomFilename,jdbcType=VARCHAR},
+      bom_filefullname = #{bomFilefullname,jdbcType=VARCHAR},
+      pcb_filename = #{pcbFilename,jdbcType=VARCHAR},
+      pcb_filefullname = #{pcbFilefullname,jdbcType=VARCHAR},
+      craft_filename = #{craftFilename,jdbcType=VARCHAR},
+      craft_filefullname = #{craftFilefullname,jdbcType=VARCHAR},
+      ismake_tool = #{ismakeTool,jdbcType=CHAR},
+      make_steel_mesh = #{makeSteelMesh,jdbcType=CHAR},
+      make_dip = #{makeDip,jdbcType=CHAR},
+      make_test = #{makeTest,jdbcType=CHAR},
+      make_defense = #{makeDefense,jdbcType=CHAR},
+      make_aging = #{makeAging,jdbcType=CHAR},
+      task_id = #{taskId,jdbcType=VARCHAR},
+      process_instance_id = #{processInstanceId,jdbcType=VARCHAR},
+      approver = #{approver,jdbcType=INTEGER},
+      approvetime = #{approvetime,jdbcType=CHAR},
+      bill_state = #{billState,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=INTEGER},
+      creationtime = #{creationtime,jdbcType=CHAR},
+      modifier = #{modifier,jdbcType=INTEGER},
+      modifiedtime = #{modifiedtime,jdbcType=CHAR},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=CHAR},
+      special_technics = #{specialTechnics,jdbcType=CHAR},
+      technics_state = #{technicsState,jdbcType=INTEGER},
+      order_count = #{orderCount,jdbcType=INTEGER}
+    where pk_product = #{pkProduct,jdbcType=INTEGER}
+  </update>
+</mapper>

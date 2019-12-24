@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.hups.customer.dao.BdInvoiceMapper" >
+  <resultMap id="BaseResultMap" type="cn.hups.customer.entity.BdInvoice" >
+    <constructor >
+      <idArg column="pk_invoice" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pk_customer" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="corpname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="dutynum" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="invoice_address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="invoice_tel" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="invoice_bank" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="invoice_account" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="addressee" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="addressee_tel" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="addressee_adrs" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="creator" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="creationtime" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="dr" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ts" jdbcType="CHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pk_invoice, pk_customer, corpname, dutynum, invoice_address, invoice_tel, invoice_bank, 
+    invoice_account, addressee, addressee_tel, addressee_adrs, creator, creationtime, 
+    dr, ts
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.hups.customer.entity.BdInvoiceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bd_invoice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bd_invoice
+    where pk_invoice = #{pkInvoice,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bd_invoice
+    where pk_invoice = #{pkInvoice,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.hups.customer.entity.BdInvoiceExample" >
+    delete from bd_invoice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.hups.customer.entity.BdInvoice" >
+    insert into bd_invoice (pk_invoice, pk_customer, corpname, 
+      dutynum, invoice_address, invoice_tel, 
+      invoice_bank, invoice_account, addressee, 
+      addressee_tel, addressee_adrs, creator, 
+      creationtime, dr, ts)
+    values (#{pkInvoice,jdbcType=INTEGER}, #{pkCustomer,jdbcType=INTEGER}, #{corpname,jdbcType=VARCHAR}, 
+      #{dutynum,jdbcType=VARCHAR}, #{invoiceAddress,jdbcType=VARCHAR}, #{invoiceTel,jdbcType=VARCHAR}, 
+      #{invoiceBank,jdbcType=VARCHAR}, #{invoiceAccount,jdbcType=VARCHAR}, #{addressee,jdbcType=VARCHAR}, 
+      #{addresseeTel,jdbcType=VARCHAR}, #{addresseeAdrs,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}, 
+      #{creationtime,jdbcType=CHAR}, #{dr,jdbcType=INTEGER}, #{ts,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hups.customer.entity.BdInvoice" >
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pkInvoice">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bd_invoice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pkInvoice != null" >
+        pk_invoice,
+      </if>
+      <if test="pkCustomer != null" >
+        pk_customer,
+      </if>
+      <if test="corpname != null" >
+        corpname,
+      </if>
+      <if test="dutynum != null" >
+        dutynum,
+      </if>
+      <if test="invoiceAddress != null" >
+        invoice_address,
+      </if>
+      <if test="invoiceTel != null" >
+        invoice_tel,
+      </if>
+      <if test="invoiceBank != null" >
+        invoice_bank,
+      </if>
+      <if test="invoiceAccount != null" >
+        invoice_account,
+      </if>
+      <if test="addressee != null" >
+        addressee,
+      </if>
+      <if test="addresseeTel != null" >
+        addressee_tel,
+      </if>
+      <if test="addresseeAdrs != null" >
+        addressee_adrs,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creationtime != null" >
+        creationtime,
+      </if>
+      <if test="dr != null" >
+        dr,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pkInvoice != null" >
+        #{pkInvoice,jdbcType=INTEGER},
+      </if>
+      <if test="pkCustomer != null" >
+        #{pkCustomer,jdbcType=INTEGER},
+      </if>
+      <if test="corpname != null" >
+        #{corpname,jdbcType=VARCHAR},
+      </if>
+      <if test="dutynum != null" >
+        #{dutynum,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAddress != null" >
+        #{invoiceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceTel != null" >
+        #{invoiceTel,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceBank != null" >
+        #{invoiceBank,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAccount != null" >
+        #{invoiceAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="addressee != null" >
+        #{addressee,jdbcType=VARCHAR},
+      </if>
+      <if test="addresseeTel != null" >
+        #{addresseeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="addresseeAdrs != null" >
+        #{addresseeAdrs,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.hups.customer.entity.BdInvoiceExample" resultType="java.lang.Integer" >
+    select count(*) from bd_invoice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bd_invoice
+    <set >
+      <if test="record.pkInvoice != null" >
+        pk_invoice = #{record.pkInvoice,jdbcType=INTEGER},
+      </if>
+      <if test="record.pkCustomer != null" >
+        pk_customer = #{record.pkCustomer,jdbcType=INTEGER},
+      </if>
+      <if test="record.corpname != null" >
+        corpname = #{record.corpname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dutynum != null" >
+        dutynum = #{record.dutynum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoiceAddress != null" >
+        invoice_address = #{record.invoiceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoiceTel != null" >
+        invoice_tel = #{record.invoiceTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoiceBank != null" >
+        invoice_bank = #{record.invoiceBank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoiceAccount != null" >
+        invoice_account = #{record.invoiceAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressee != null" >
+        addressee = #{record.addressee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addresseeTel != null" >
+        addressee_tel = #{record.addresseeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addresseeAdrs != null" >
+        addressee_adrs = #{record.addresseeAdrs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationtime != null" >
+        creationtime = #{record.creationtime,jdbcType=CHAR},
+      </if>
+      <if test="record.dr != null" >
+        dr = #{record.dr,jdbcType=INTEGER},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bd_invoice
+    set pk_invoice = #{record.pkInvoice,jdbcType=INTEGER},
+      pk_customer = #{record.pkCustomer,jdbcType=INTEGER},
+      corpname = #{record.corpname,jdbcType=VARCHAR},
+      dutynum = #{record.dutynum,jdbcType=VARCHAR},
+      invoice_address = #{record.invoiceAddress,jdbcType=VARCHAR},
+      invoice_tel = #{record.invoiceTel,jdbcType=VARCHAR},
+      invoice_bank = #{record.invoiceBank,jdbcType=VARCHAR},
+      invoice_account = #{record.invoiceAccount,jdbcType=VARCHAR},
+      addressee = #{record.addressee,jdbcType=VARCHAR},
+      addressee_tel = #{record.addresseeTel,jdbcType=VARCHAR},
+      addressee_adrs = #{record.addresseeAdrs,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=INTEGER},
+      creationtime = #{record.creationtime,jdbcType=CHAR},
+      dr = #{record.dr,jdbcType=INTEGER},
+      ts = #{record.ts,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hups.customer.entity.BdInvoice" >
+    update bd_invoice
+    <set >
+      <if test="pkCustomer != null" >
+        pk_customer = #{pkCustomer,jdbcType=INTEGER},
+      </if>
+      <if test="corpname != null" >
+        corpname = #{corpname,jdbcType=VARCHAR},
+      </if>
+      <if test="dutynum != null" >
+        dutynum = #{dutynum,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAddress != null" >
+        invoice_address = #{invoiceAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceTel != null" >
+        invoice_tel = #{invoiceTel,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceBank != null" >
+        invoice_bank = #{invoiceBank,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAccount != null" >
+        invoice_account = #{invoiceAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="addressee != null" >
+        addressee = #{addressee,jdbcType=VARCHAR},
+      </if>
+      <if test="addresseeTel != null" >
+        addressee_tel = #{addresseeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="addresseeAdrs != null" >
+        addressee_adrs = #{addresseeAdrs,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="creationtime != null" >
+        creationtime = #{creationtime,jdbcType=CHAR},
+      </if>
+      <if test="dr != null" >
+        dr = #{dr,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=CHAR},
+      </if>
+    </set>
+    where pk_invoice = #{pkInvoice,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hups.customer.entity.BdInvoice" >
+    update bd_invoice
+    set pk_customer = #{pkCustomer,jdbcType=INTEGER},
+      corpname = #{corpname,jdbcType=VARCHAR},
+      dutynum = #{dutynum,jdbcType=VARCHAR},
+      invoice_address = #{invoiceAddress,jdbcType=VARCHAR},
+      invoice_tel = #{invoiceTel,jdbcType=VARCHAR},
+      invoice_bank = #{invoiceBank,jdbcType=VARCHAR},
+      invoice_account = #{invoiceAccount,jdbcType=VARCHAR},
+      addressee = #{addressee,jdbcType=VARCHAR},
+      addressee_tel = #{addresseeTel,jdbcType=VARCHAR},
+      addressee_adrs = #{addresseeAdrs,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      creationtime = #{creationtime,jdbcType=CHAR},
+      dr = #{dr,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=CHAR}
+    where pk_invoice = #{pkInvoice,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.orgs.dao.BdDeptdocMapperExpand">
+
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(pk_deptdoc)
+        FROM
+        bd_deptdoc
+        WHERE
+        dr = 0
+        <if test="bdDeptdocPo != null and bdDeptdocPo.deptname != null and bdDeptdocPo.deptname != ''">
+            and deptname = #{bdDeptdocPo.deptname}
+        </if>
+    </select>
+
+    <!--分页查询数据-->
+    <select id="selectAllBdDeptdocAsPage" resultType="cn.hups.orgs.po.BdDeptdocPo">
+        SELECT
+        dept.pk_deptdoc as pkDeptdoc,
+        dept.deptname,
+        dept.deptshortname,
+        dept.deptcode,
+        dept.pk_corp as pkCorp,
+        corp.unitname as pkCorpShow,
+        dept.pk_psndoc as pkPsndoc,
+        dept.canceled,
+        dept.canceldate,
+        dept.memo,
+        dept.erpid,
+        dept.erptype,
+        dept.def1,
+        dept.def2,
+        dept.def3,
+        dept.def4,
+        dept.def5,
+        dept.creator,
+        su.user_name as creatorShow,
+        dept.creationtime,
+        dept.dr,
+        dept.ts
+        FROM
+        bd_deptdoc dept
+        LEFT JOIN sm_user su on dept.creator = su.userid and su.dr = 0
+        LEFT JOIN bd_corp corp on dept.pk_corp = corp.pk_corp and corp.dr = 0
+        WHERE
+        dept.dr = 0
+        <if test="bdDeptdocPo != null and bdDeptdocPo.deptname != null and bdDeptdocPo.deptname != ''">
+            and dept.deptname = #{bdDeptdocPo.deptname}
+        </if>
+    </select>
+
+    <!--根据用户主键查询该用户负责的部门-->
+    <select id="selectDeptByChargeUser" resultType="cn.hups.orgs.po.BdDeptdocPo">
+        SELECT
+        dept.pk_deptdoc as pkDeptdoc,
+        dept.deptname,
+        dept.deptshortname,
+        dept.deptcode,
+        dept.pk_corp as pkCorp,
+        dept.pk_psndoc as pkPsndoc,
+        dept.canceled,
+        dept.canceldate,
+        dept.memo,
+        dept.erpid,
+        dept.erptype,
+        dept.def1,
+        dept.def2,
+        dept.def3,
+        dept.def4,
+        dept.def5,
+        dept.creator,
+        dept.creationtime,
+        dept.dr,
+        dept.ts
+        FROM
+        bd_deptdoc dept
+        WHERE
+        dept.dr = 0 AND
+        dept.pk_psndoc = (select pk_psndoc from sm_user where userid = #{userid}) and dept.pk_psndoc is not null
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteBdDeptdocByPks" parameterType="java.util.List">
+        UPDATE bd_deptdoc SET dr = 1
+        WHERE pk_deptdoc in
+        <foreach collection="pkArr" item="pk_deptdoc" open="(" close=")" separator=",">
+            #{pk_deptdoc}
+        </foreach>
+    </update>
+
+    <!--根据公司查询部门信息作为参照-->
+    <select id="selectAllBdDeptdocAsRef" resultType="cn.hups.common.po.ClientRefPo">
+        SELECT
+        pk_deptdoc as value,
+        deptname as label
+        FROM
+        bd_deptdoc
+        WHERE dr = 0
+        <if test="pkCorp != null">
+            AND pk_corp = #{pkCorp}
+        </if>
+    </select>
+
+    <!--查询所有钉钉拉去的部门-->
+    <select id="selectAllDingDingDeptdoc" resultType="cn.hups.orgs.po.BdDeptdocPo">
+        SELECT
+        pk_deptdoc as pkDeptdoc,
+        deptname,
+        erpid,
+        erptype
+        FROM
+        bd_deptdoc
+        WHERE dr = 0 and erptype = 'dingding'
+        <if test="pkCorp != null">
+            AND pk_corp = #{pkCorp}
+        </if>
+    </select>
+
+    <!--查询部门级联人员数据结构进行返回-->
+    <select id="selectDeptCascadePsndoc" resultType="cn.hups.orgs.po.BdDeptdocPo">
+        SELECT
+        dept.pk_deptdoc AS pkDeptdoc,
+        dept.deptname,
+        psn.pk_psndoc AS pkPsndoc,
+        psn.erpid as psndocErpid,
+        psn.psnname
+        FROM
+        bd_deptdoc dept
+        LEFT JOIN bd_psndoc psn ON dept.pk_deptdoc = psn.pk_deptdoc
+        WHERE
+        dept.dr = 0
+        AND psn.dr = 0
+        <if test="pkCorp != null">
+            AND dept.pk_corp = #{pkCorp}
+        </if>
+    </select>
+</mapper>

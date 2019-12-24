@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.rbac.dao.SmRoleMapperExpand">
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(pk_role)
+        FROM
+        sm_role
+        WHERE
+        dr = 0
+        <if test="smRolePo != null and smRolePo.roleName != null and smRolePo.roleName != ''">
+            and role_name = #{smRolePo.roleName}
+        </if>
+    </select>
+
+    <!--分页查询所有角色-->
+    <select id="selectAllSmRoleAsPage" resultType="cn.hups.rbac.po.SmRolePo">
+        SELECT
+        sr.pk_role as pkRole,
+        sr.role_code as roleCode,
+        sr.role_name as roleName,
+        sr.role_memo as roleMemo,
+        sr.role_type as roleType,
+        sr.pk_org as pkOrg,
+        sr.pk_group as pkGroup,
+        sr.creator,
+        su.user_name as creatorShow,
+        sr.creationtime,
+        sr.modifier,
+        smo.user_name as modifierShow,
+        sr.modifiedtime,
+        sr.dr,
+        sr.ts
+        FROM
+        sm_role sr
+        LEFT JOIN sm_user su on sr.creator = su.userid and su.dr = 0
+        LEFT JOIN sm_user smo on sr.modifier = smo.userid and smo.dr = 0
+        WHERE
+        sr.dr = 0
+        <if test="smRolePo != null and smRolePo.roleName != null and smRolePo.roleName != ''">
+            and sr.role_name = #{smRolePo.roleName}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteSmRoleByPks" parameterType="java.util.List">
+        UPDATE sm_role SET dr = 1
+        WHERE pk_role in
+        <foreach collection="pkArr" item="pk_role" open="(" close=")" separator=",">
+            #{pk_role}
+        </foreach>
+    </update>
+
+    <!--查询所有角色作为穿梭框数据-->
+    <select id="selectAllSmRoleAsTransfer" resultType="cn.hups.rbac.po.SmRolePo">
+        SELECT
+        sr.pk_role as pkRole,
+        sr.role_code as roleCode,
+        sr.role_name as roleName
+        FROM
+        sm_role sr
+        WHERE
+        sr.dr = 0
+    </select>
+</mapper>

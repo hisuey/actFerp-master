@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hups.produce.dao.BillProduceQuoteHMapperExpand">
+
+    <resultMap id="billProduceQuoteHPoMap" type="cn.hups.produce.po.BillProduceQuoteHPo">
+        <id column="pkProduceQuoteH" property="pkProduceQuoteH" jdbcType="INTEGER"/>
+        <result column="pkProductOrderB" property="pkProductOrderB" jdbcType="INTEGER" />
+        <result column="contractno" property="contractno" jdbcType="VARCHAR" />
+        <result column="pk_customer" property="pk_customer" jdbcType="INTEGER" />
+        <result column="pk_product" property="pk_product" jdbcType="INTEGER" />
+        <result column="unit_price_out" property="unit_price_out" jdbcType="INTEGER" />
+        <result column="unit_total_out" property="unit_total_out" jdbcType="INTEGER" />
+        <result column="bill_state" property="bill_state" jdbcType="INTEGER" />
+        <result column="creator" property="creator" jdbcType="INTEGER" />
+        <result column="creatorShow" property="creatorShow" jdbcType="VARCHAR" />
+        <result column="creationtime" property="creationtime" jdbcType="CHAR" />
+        <result column="dr" property="dr" jdbcType="INTEGER" />
+        <result column="ts" property="ts" jdbcType="CHAR" />
+        <result column="productNum" property="productNum" jdbcType="INTEGER" />
+        <result column="ispcb" property="ispcb" jdbcType="CHAR" />
+        <result column="pcbSource" property="pcbSource" jdbcType="CHAR" />
+        <result column="pcbLong" property="pcbLong" jdbcType="DOUBLE" />
+        <result column="pcbWide" property="pcbWide" jdbcType="DOUBLE" />
+        <result column="pcbThick" property="pcbThick" jdbcType="INTEGER" />
+        <result column="pcbResistColor" property="pcbResistColor" jdbcType="VARCHAR" />
+        <result column="pcbCharColor" property="pcbCharColor" jdbcType="VARCHAR" />
+        <result column="pcbResistCover" property="pcbResistCover" jdbcType="CHAR" />
+        <result column="pcbPadSpary" property="pcbPadSpary" jdbcType="CHAR" />
+        <result column="pcbCopperThick" property="pcbCopperThick" jdbcType="CHAR" />
+        <result column="productSteelMeshSource" property="productSteelMeshSource" jdbcType="CHAR" />
+        <result column="productMaterialSource" property="productMaterialSource" jdbcType="CHAR" />
+        <result column="bomFilename" property="bomFilename" jdbcType="VARCHAR" />
+        <result column="bomFilefullname" property="bomFilefullname" jdbcType="VARCHAR" />
+        <result column="pcbFilename" property="pcbFilename" jdbcType="VARCHAR" />
+        <result column="pcbFilefullname" property="pcbFilefullname" jdbcType="VARCHAR" />
+        <result column="craftFilename" property="craftFilename" jdbcType="VARCHAR" />
+        <result column="craftFilefullname" property="craftFilefullname" jdbcType="VARCHAR" />
+        <collection property="billProduceQuoteBPoList" ofType="cn.hups.produce.po.BillProduceQuoteBPo" select="selectAllProduceQuoteByMaster" column="pkProduceQuoteH"/>
+        <collection property="modelQuoteBPoList" ofType="cn.hups.produce.po.BillProduceQuoteBPo" select="selectModelQuoteByMaster" column="pkProduceQuoteH"/>
+        <collection property="specialQuoteBPoList" ofType="cn.hups.produce.po.BillProduceQuoteBPo" select="selectSpecialQuoteByMaster" column="pkProduceQuoteH"/>
+    </resultMap>
+
+    <!--分页查询数据-->
+    <select id="selectAllProduceQuoteAsPage" resultMap="billProduceQuoteHPoMap">
+        SELECT
+        bpq.pk_produce_quote_h as pkProduceQuoteH,
+        bpq.contractno,
+        bpq.pk_customer as pkCustomer,
+        bcu.code as customerCode,
+        bpq.pk_psndoc as pkPsndoc,
+        bpq.pk_product as pkProduct,
+        bpro.code as productCode,
+        bpro.name as productName,
+        bpro.model as productModel,
+        bpro.order_number as productOrderNumber,
+        bpordb.product_num as productNum,
+        bpordb.pk_product_order_b as pkProductOrderB,
+        bpq.unit_price_out as unitPriceOut,
+        bpq.unit_total_out as unitTotalOut,
+        bpq.task_id as taskId,
+        bpq.approver,
+        sut.user_name as approverShow,
+        bpq.approvetime,
+        bpq.bill_state as billState,
+        bpq.creator,
+        su.user_name as creatorShow,
+        bpq.creationtime,
+        bpq.dr,
+        bpq.ts,
+        bpro.ispcb,
+        bpro.pcb_source as pcbSource,
+        bpro.pcb_long as pcbLong,
+        bpro.pcb_wide as pcbWide,
+        bpro.pcb_thick as pcbThick,
+        bpro.pcb_resist_color as pcbResistColor,
+        bpro.pcb_char_color as pcbCharColor,
+        bpro.pcb_resist_cover as pcbResistCover,
+        bpro.pcb_pad_spary as pcbPadSpary,
+        bpro.pcb_copper_thick as pcbCopperThick,
+        bpro.steel_mesh_source as productSteelMeshSource,
+        bpro.material_source as productMaterialSource,
+        bpro.bom_filename as bomFilename,
+        bpro.bom_filefullname as bomFilefullname,
+        bpro.pcb_filename as pcbFilename,
+        bpro.pcb_filefullname as pcbFilefullname,
+        bpro.craft_filename as craftFilename,
+        bpro.craft_filefullname as craftFilefullname
+        FROM
+        bill_produce_quote_h bpq
+        LEFT JOIN bd_customer bcu on bpq.pk_customer = bcu.pk_customer AND bcu.dr = 0
+        LEFT JOIN bd_product bpro on bpq.pk_product = bpro.pk_product AND bpro.dr = 0
+        LEFT JOIN bill_product_order_b bpordb on bpq.pk_product_order_b = bpordb.pk_product_order_b AND bpordb.dr = 0
+        LEFT JOIN sm_user su on su.userid = bpq.creator and su.dr = 0
+        LEFT JOIN sm_user sut on sut.userid = bpq.approver and su.dr = 0
+        WHERE
+        bpq.dr = 0
+        <!--任务认领查询条件-->
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.approver != null">
+            and bpq.approver = #{billProduceQuoteHPo.approver}
+        </if>
+        <!--查询模板条件-->
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.productCode != null and billProduceQuoteHPo.productCode != ''">
+            and bpro.code = #{billProduceQuoteHPo.productCode}
+        </if>
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.pkPsndoc != null">
+            and bpq.pk_psndoc = #{billProduceQuoteHPo.pkPsndoc}
+        </if>
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.customShortName != null and billProduceQuoteHPo.customShortName != ''">
+            and bcu.name = #{billProduceQuoteHPo.customShortName}
+        </if>
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.billState != null">
+            and bpq.bill_state = #{billProduceQuoteHPo.billState}
+        </if>
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.creationdateBegin != null and billProduceQuoteHPo.creationdateBegin != ''
+                                      and billProduceQuoteHPo.creationdateEnd != null and billProduceQuoteHPo.creationdateEnd != ''">
+            and bpq.creationtime BETWEEN #{billProduceQuoteHPo.creationdateBegin} AND #{billProduceQuoteHPo.creationdateEnd}
+        </if>
+    </select>
+    <!--根据主表主键查询子表数据-->
+    <select id="selectAllProduceQuoteByMaster" resultType="cn.hups.produce.po.BillProduceQuoteBPo" parameterType="java.lang.Integer">
+        SELECT
+        bpqb.pk_produce_quote_b as pkProduceQuoteB,
+        bpqb.pk_produce_quote_h as pkProduceQuoteH,
+        bpqb.ismodel,
+        bpqb.type,
+        bpqb.param,
+        bpqb.unit_price_out as unitPriceOut,
+        bpqb.unit_total_price_out as unitTotalPriceOut,
+        bpqb.unit_total_out as unitTotalOut,
+        bpqb.unit_price_sale as unitPriceSale,
+        bpqb.unit_total_price_sale as unitTotalPriceSale,
+        bpqb.unit_total_sale as unitTotalSale,
+        bpqb.dr,
+        bpqb.ts,
+        bpqb.memo
+        FROM bill_produce_quote_b bpqb
+        WHERE bpqb.dr = 0 AND bpqb.ismodel = '否' AND bpqb.pk_produce_quote_h = #{pkProduceQuoteH}
+    </select>
+    <!--根据主表主键查询子表制具数据-->
+    <select id="selectModelQuoteByMaster" resultType="cn.hups.produce.po.BillProduceQuoteBPo" parameterType="java.lang.Integer">
+        SELECT
+        bpqb.pk_produce_quote_b as pkProduceQuoteB,
+        bpqb.pk_produce_quote_h as pkProduceQuoteH,
+        bpqb.ismodel,
+        bpqb.type,
+        bpqb.param,
+        bpqb.unit_price_out as unitPriceOut,
+        bpqb.unit_total_price_out as unitTotalPriceOut,
+        bpqb.unit_total_out as unitTotalOut,
+        bpqb.unit_price_sale as unitPriceSale,
+        bpqb.unit_total_price_sale as unitTotalPriceSale,
+        bpqb.unit_total_sale as unitTotalSale,
+        bpqb.dr,
+        bpqb.ts,
+        bpqb.memo
+        FROM bill_produce_quote_b bpqb
+        WHERE bpqb.dr = 0 AND bpqb.ismodel = '是' AND bpqb.pk_produce_quote_h = #{pkProduceQuoteH}
+    </select>
+    <!--根据主表主键查询子表制具数据-->
+    <select id="selectSpecialQuoteByMaster" resultType="cn.hups.produce.po.BillProduceQuoteBPo" parameterType="java.lang.Integer">
+        SELECT
+        bpqb.pk_produce_quote_b as pkProduceQuoteB,
+        bpqb.pk_produce_quote_h as pkProduceQuoteH,
+        bpqb.ismodel,
+        bpqb.type,
+        bpqb.param,
+        bpqb.unit_price_out as unitPriceOut,
+        bpqb.unit_total_price_out as unitTotalPriceOut,
+        bpqb.unit_total_out as unitTotalOut,
+        bpqb.unit_price_sale as unitPriceSale,
+        bpqb.unit_total_price_sale as unitTotalPriceSale,
+        bpqb.unit_total_sale as unitTotalSale,
+        bpqb.dr,
+        bpqb.ts,
+        bpqb.memo
+        FROM bill_produce_quote_b bpqb
+        WHERE bpqb.dr = 0 AND bpqb.ismodel = '无' AND bpqb.pk_produce_quote_h = #{pkProduceQuoteH}
+    </select>
+
+    <!--查询数据表中数量-->
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(bpq.pk_produce_quote_h)
+        FROM
+        bill_produce_quote_h bpq
+        LEFT JOIN bd_customer bcu on bpq.pk_customer = bcu.pk_customer AND bcu.dr = 0
+        LEFT JOIN bd_product bpro on bpq.pk_product = bpro.pk_product AND bpro.dr = 0
+        WHERE
+        bpq.dr = 0
+        <!--任务认领查询条件-->
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.approver != null">
+            and bpq.approver = #{billProduceQuoteHPo.approver}
+        </if>
+        <!--查询模板条件-->
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.productCode != null and billProduceQuoteHPo.productCode != ''">
+            and bpro.code = #{billProduceQuoteHPo.productCode}
+        </if>
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.pkPsndoc != null">
+            and bpq.pk_psndoc = #{billProduceQuoteHPo.pkPsndoc}
+        </if>
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.customShortName != null and billProduceQuoteHPo.customShortName != ''">
+            and bcu.name = #{billProduceQuoteHPo.customShortName}
+        </if>
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.billState != null">
+            and bpq.bill_state = #{billProduceQuoteHPo.billState}
+        </if>
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.creationdateBegin != null and billProduceQuoteHPo.creationdateBegin != ''
+                                      and billProduceQuoteHPo.creationdateEnd != null and billProduceQuoteHPo.creationdateEnd != ''">
+            and bpq.creationtime BETWEEN #{billProduceQuoteHPo.creationdateBegin} AND #{billProduceQuoteHPo.creationdateEnd}
+        </if>
+    </select>
+
+    <!--根据主键集合删除数据-->
+    <update id="deleteProduceQuoteByPks" parameterType="java.util.List">
+        UPDATE bill_produce_quote_h SET dr = 1
+        WHERE pk_produce_quote_h in
+        <foreach collection="pkArr" item="pk_produce_quote_h" open="(" close=")" separator=",">
+            #{pk_produce_quote_h}
+        </foreach>
+    </update>
+
+    <!--认领工艺审核任务-->
+    <update id="claimProduceQuote">
+        UPDATE bill_produce_quote_h SET task_id = #{taskId},approver = #{userid}, bill_state = #{billState}
+        WHERE pk_product = #{pkProduct} AND dr = 0
+    </update>
+
+    <!--根据条件更新生产单据状态-->
+    <update id="updateBillProduceQuoteHBillstateByExample">
+        UPDATE bill_produce_quote_h SET bill_state = #{billState}
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.taskId != null and billProduceQuoteHPo.taskId != ''">
+            ,task_id = #{billProduceQuoteHPo.taskId}
+        </if>
+        WHERE dr = 0
+        <if test="billProduceQuoteHPo != null and billProduceQuoteHPo.pkProduct != null">
+            AND pk_product = #{billProduceQuoteHPo.pkProduct}
+        </if>
+    </update>
+</mapper>
